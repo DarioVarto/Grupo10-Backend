@@ -1,0 +1,37 @@
+<%- include("../partials/head.ejs")%>
+
+<div class="col-9">
+    <div class="container p-3 w-100">
+        <h1 class="mt-5 mb-4">Usuarios</h1>
+        <%- include("../partials/mensajes.ejs")%>
+        <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                <%usuarios.forEach(usuario=>{%>  <!-- Realizo un for por la variable usuarios que envie en users.js -->
+                <tr>
+                    <td><%=usuario.nombre%></td> 
+                <td><%usuario.email%></td> 
+               <td>
+                <a class="btn btn-primary" href="/edit/<%=usuario.id%>">editar</a>  
+                <form action="/delete/user/" method="">
+                    <button class="btn btn-danger ml-2">Eliminar</button>
+                </form>
+                
+            
+            </td> 
+            </tr>
+            <%})%>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include("../partials/footer.ejs") %>

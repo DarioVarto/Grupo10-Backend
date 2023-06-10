@@ -1,0 +1,165 @@
+body{
+    padding:0 60px;
+    font-family: 'Source Sans Pro', sans-serif;
+ }
+ a, span, p {
+     color: black;
+     text-decoration: none;
+     text-transform: uppercase;
+ }
+
+ .link-item{
+     padding: 16px 20px;
+     
+ }
+ .remove-pad-left{
+     padding-left: 0px /* !important */;
+ }
+ .remove-pad-right{
+     padding-right: 0px /* !important */;
+ }
+ /* Encabezado header */
+ .pre-nav {
+     font-size: 18px;
+     border-bottom: 1px solid rgb(231, 231,231);
+ }
+ 
+  .input-encabezado,.registro{
+     border-left: 1px solid rgb(231, 231,231);
+  }
+ 
+ .coustomize{
+     color: rgb(237, 22, 38);
+  }
+ 
+  .registro span {
+     color: #959595;
+  }
+ 
+  input[type="text"]{
+     border: none;
+     outline: none;
+     display: flex;
+     align-items:center;
+     color: #959595;
+ }
+ /* Final encabezado header */
+
+  /* Inicio Navbar */
+
+ .logo-marvel{
+    width: 150px;
+ }
+ .navbar{
+     font-size: 18px;
+ }
+ 
+ .mobile-search{
+     display: none;
+ }
+ /* Final Navbar */
+
+ /* Hero inicio */
+
+ .hero{
+    border:1px solid rgb(231, 231,231);
+}
+
+.hero-title{
+    font-size: 8.75rem;
+    line-height: 8.75rem;
+    font-weight: 900;
+}
+.img1-hero{
+    width: 200px;
+}
+
+ .marvel-card{
+     background-color: black;
+     padding: 32px;
+ }
+ .escudo-capitan-america{
+    width: 200px;
+ }
+ .img-card-hero{
+    width: 120px;
+ }
+ .marvel-card div{
+     padding-left: 30px;
+ }
+ .marvel-card p{
+     color: white;
+     margin: 0px;
+     font-size: 24px;
+     line-height: 30px;
+     font-weight: 700;
+     padding-bottom: 20px;
+ }
+ .marvel-card div  button {
+    background-color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    text-align: center;
+    border: solid 2px transparent;
+ }
+ 
+@media(max-width:1600px){
+    .hero-title{
+        font-size: 7rem;
+    }
+}
+
+@media(max-width:1600px){
+    .hero-title{
+        font-size: 6rem;
+    }
+}
+
+ @media(max-width: 1250px) {
+     .div-1{
+        flex-direction: column-reverse;
+      }
+     .div-1 img{
+         margin-top: 20px;
+       }
+    .escudo-capitan-america{
+        display: none;
+       }
+ 
+     .marvel-card {
+        background-color: white;
+     }
+     .marvel-card p{
+         color: black;
+     }
+     .marvel-card div  button {
+         background-color: black;
+         color:white;
+      }
+     .hero{
+         border-right:none;
+         border-left:none;
+     }
+ }
+ 
+ @media(max-width: 992px) {
+     .mobile-search {
+         display: inline-block;
+     }
+     .div-1 span{
+         font-size: 5rem;
+         line-height: 5rem;
+     }
+ }
+ 
+ @media(max-width: 768px) {
+    .input-encabezado,.registro{
+         border-left: none;
+         border-top: 1px solid rgb(231, 231,231);
+     }
+     .div-1 span{
+         font-size: 3rem;
+         line-height: 3rem;
+     }
+ }
+ 
