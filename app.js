@@ -8,6 +8,7 @@ import session from 'express-session'
 import methodOverride from 'method-override'
 import passport from 'passport'
 import morgan from 'morgan'
+import User from './models/usermodels.js'
 
 
 import userRouter from './routes/user.js' 
@@ -22,6 +23,13 @@ app.use(express.static('public'))
 
 app.use(flash())
 
+/* app.use((req,res)=>{
+    res.locals.success_msg=req.flash(('success_msg'))
+    res.locals.error_msg=req.flash(('error_msg'))
+    res.locals.error=req.flash(('error'))
+    res.locals.currentUser=req.user
+}) */
+
 app.use(userRouter)
 
 dotenv.config({path:'./config.env'})
@@ -29,6 +37,16 @@ dotenv.config({path:'./config.env'})
 mongoose.connect(process.env.MONGO_GRUPO10) 
 .then(()=>console.log('la base de datos esta conectada'))
 .catch(error=>console.log('error'))
+
+app.use(session({
+    secret:'El usuario está logueado',
+    resave:true,
+    saveUninitialized:true  //Permite navegar sin iniciar sesión
+}))
+
+app.use(passport.initialize())
+app.use(passport.session()) //Guarda los datos de la sesión en un objeto denominado req.user
+
 
 
     
