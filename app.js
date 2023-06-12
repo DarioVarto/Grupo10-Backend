@@ -16,14 +16,17 @@ import userRouter from './routes/user.js'
 
 const app=express()
 
-app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({extended:true}))
-app.set('view engine','ejs')
-app.use(express.static('public'))
+app.use(morgan('dev')) //Muestra resultado de las peticiones en la consola
+
+app.use(bodyParser.urlencoded({extended:true}))  //Formularios y envio de formación al node js
+
+app.set('view engine','ejs') //Motor de plantilla
+
+app.use(express.static('public')) //Conexión a carpeta public
 
 app.use(flash())
 
-/* app.use((req,res)=>{
+/*  app.use((req,res)=>{
     res.locals.success_msg=req.flash(('success_msg'))
     res.locals.error_msg=req.flash(('error_msg'))
     res.locals.error=req.flash(('error'))
@@ -34,7 +37,7 @@ app.use(userRouter)
 
 dotenv.config({path:'./config.env'})
 
-mongoose.connect(process.env.MONGO_GRUPO10) 
+mongoose.connect(process.env.MONGO_GRUPO10,{}) 
 .then(()=>console.log('la base de datos esta conectada'))
 .catch(error=>console.log('error'))
 

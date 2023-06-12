@@ -1,4 +1,6 @@
 import {Schema,model} from "mongoose";
+import mongoose from "mongoose";
+import passportLocalMongoose from 'passport-local-mongoose'
 
 let userSchema=new Schema({
     nombre: String,
@@ -13,4 +15,6 @@ let userSchema=new Schema({
 
 //module.exports=mongoose.model('User',userSchema)
 
+userSchema.plugin(passportLocalMongoose,{usernameField:'email'}) //Guardo el email mientras dure la sesión en usernameField
 export default model('User',userSchema)
+
