@@ -1,5 +1,5 @@
-import express from 'express'
-const router=express.Router()
+import express from 'express' 
+  const router=express.Router()
 import passport from "passport"
 import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
@@ -10,6 +10,9 @@ import User from '../models/usermodels.js'
 
 //Peticiones get
 
+router.get('/registrar', (req,res)=> {
+  res.render('./users/registrar');
+});
 
 router.get('/',(req,res)=>{
   res.render('pages/index')
@@ -46,9 +49,7 @@ router.get('/olvido',(req,res)=>{
     res.render('users/olvido')
 })
 
-router.get('/registrar',(req,res)=>{
-  res.render('users/registrar')
-})
+
 
 router.get('/password/change',(req,res)=>{
   res.render('users/changepassword')
@@ -64,24 +65,26 @@ router.get(('/logout',(req,res)=>{  //No es necesario crear un archivo logout, e
 
 //Método post
 
-router.post('/signup',(req,res)=>{
-  let {nombre , email, password}=  req.body;
+router.post('/registrar', (req, res)=> {
+  let {name, email, password} = req.body;
 
-  let userData={
-       nombre : nombre,
-       email : email
+  let userData = {
+      name : name,
+      email :email
   };
- 
 
-  User.register(userData,password,(error,user)=>{
-       if(error){
-           res.redirect('/signup')
-       }
+  User.register(userData, password, (err, user)=> {
+      if(err) {
+          req.flash('error_msg', 'ERROR: '+err);
+          res.redirect('/registrar');
+      }else{
+       res.redirect('/login'); 
+      }
       
-       res.redirect('/login')
-  })
-  
-})
+  });
+
+});
+
 
 //Login para usuarios registrados
 

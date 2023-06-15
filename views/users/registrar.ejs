@@ -1,10 +1,10 @@
 <%- include("../partials/head.ejs")%>
 
-
-<div class="col-9">
+        <div class="col-9">
     <div class="container p-3 w-50">
         <h1 class="text-center mt-5 mb-3">Registrar</h1>
-        <form action="/signup" method="post">
+        <%- include('../partials/messages') -%>
+        <form action="/registrar" method="post">
             <div class="form-group px-0">
                 <input type="text" name="nombre" class="form-control" placeholder="ingrese su nombre" required>
             </div>
@@ -18,6 +18,6 @@
 
         </form>
     </div>
-</div>
+</div> 
 
 <%- include("../partials/footer.ejs") %>
