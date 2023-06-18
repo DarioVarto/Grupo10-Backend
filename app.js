@@ -29,8 +29,6 @@ dotenv.config({path:'./config.env'})
 mongoose.connect(process.env.MONGO_GRUPO10) 
 .then(()=>console.log('la base de datos esta conectada'))
 .catch(error=>console.log('error'))
-
-
     
 
 app.listen(process.env.PORT,()=>{
