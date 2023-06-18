@@ -35,4 +35,5 @@ mongoose.connect(process.env.MONGO_GRUPO10)
 
 app.listen(process.env.PORT,()=>{
     console.log('el servidor se está ejecutando')
+    console.log(process.env.PORT)
 })
