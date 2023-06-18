@@ -48,7 +48,7 @@ mongoose.connect(process.env.MONGO_GRUPO10, {
 
 
 app.use(session({
-    secret : 'El usuario esta logueado',
+    secret : 'El usuario esta conectado',
     resave : true,
     saveUninitialized : true //Permite navegar sin iniciar sesión
 }));

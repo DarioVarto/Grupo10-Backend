@@ -10,13 +10,13 @@ import User from '../models/usermodels.js'
 
 //Peticiones get
 
-router.get('/registrar', (req,res)=> {
-  res.render('./users/registrar');
-});
-
 router.get('/',(req,res)=>{
   res.render('pages/index')
 })
+
+router.get('/registrar', (req,res)=> {
+  res.render('./users/registrar');
+});
 
 router.get('/alluser',(req,res)=>{
   User.find({})  //Busca y me trae todos los usuarios
@@ -51,7 +51,7 @@ router.get('/olvido',(req,res)=>{
 
 
 
-router.get('/password/change',(req,res)=>{
+router.get('/changepassword',(req,res)=>{
   res.render('users/changepassword')
 })
 
