@@ -151,5 +151,19 @@ h4{
     font-size: 16px;
 }
 
+/* PRODUCT DETAILS */
+.img-detail{
+    height: 720px;
+}
+
+.section-detail{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.section-details-info{
+    padding:50px
+}
+
 
 
