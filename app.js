@@ -11,6 +11,7 @@ import morgan from 'morgan'
 
 
 import userRouter from './routes/user.js' 
+import productRouter from './routes/products-detail.js' 
 
 
 const app=express()
@@ -23,6 +24,7 @@ app.use(express.static('public'))
 app.use(flash())
 
 app.use(userRouter)
+app.use(productRouter)
 
 dotenv.config({path:'./config.env'})
 
