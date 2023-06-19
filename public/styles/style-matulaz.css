@@ -4,18 +4,15 @@ body{
     margin:30px;
 }
 
-p, h3,h4,button{
-    font-family: 'Lato', sans-serif;
-}
-
 .section{
-    padding-top: 36px;
+    padding-top: 100px;
 }
 
 .section-title>h3{
     font-weight: 1000;
-    font-size: 56px;
+    font-size: 100px;
     margin:0px;
+    letter-spacing: -4px;
 }
 
 /*TOP SALES SECTION */
@@ -33,9 +30,10 @@ p, h3,h4,button{
 }
 
 .card .price{
-    font-size: 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 42px;
     font-weight: 800;
-    margin:12px 0px
+    margin:12px 0px;
 }
 
 .etiquetas{
@@ -48,7 +46,7 @@ p, h3,h4,button{
     padding:4px 6px;
     margin: 0px 4px 15px 0px;
     color:rgb(243, 243, 243);
-    font-size:12px;
+    font-size:16px;
 }
 
 .imagen{
@@ -57,16 +55,24 @@ p, h3,h4,button{
 }
 
 .imagen>img{
-    width: 180px;
+    width: 300px;
+}
+
+.detalles-producto{
+    margin: 4px 60px;
+    padding-bottom:25px;
 }
 
 .card .description{
-    font-size: 16px;
+    text-transform: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
 }
 
 .btn-one-box{
     display:flex;
     justify-content: center;
+    height: 60px;
 }
 .btn-one{
     width: 100%;
@@ -74,8 +80,8 @@ p, h3,h4,button{
     background-color:#dd1229;
     border:none;
     padding: 8px 20px ;
-    font-size:16px;
-    font-weight: 700;
+    font-size:24px;
+    font-weight: 500;
 }
 
 .transparente{
@@ -88,9 +94,14 @@ p, h3,h4,button{
 .custom-section{
     display: flex;
     border: 1px rgb(240, 240, 240) solid;
-    margin-top:30px
+    margin-top:30px;
+    align-items: center;
+    padding-right: 100px;
 }
 
+.basis{
+    flex-basis: 100%;
+}
 
 
 .custom-section>div>img{
@@ -98,18 +109,23 @@ p, h3,h4,button{
 }
 
 .custom-text{
-    margin-left:50px
+    margin-left:50px;
+    padding-right: 50px;
+}
+
+.custom-text>h4{
+    font-family: 'Inter', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
 }
 
 .btn-two{
-    width: 60%;
-    padding:-5px 10px -5px 10px;
     color:white;
     background-color:#dd1229;
     border:none;
-    font-size:12px;
-    font-weight: 700;
-    margin-right: 20px;
+    padding: 12px 40px ;
+    font-size:24px;
+    font-weight: 500;
 }
 
 h4{
@@ -119,8 +135,10 @@ h4{
 }
 
 .custom-text>p{
+    font-family: 'Inter', sans-serif;
+    text-transform: none;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 36px;
 }
 
 .btn-two-box{
@@ -129,7 +147,8 @@ h4{
 }
 
 .btn-two-box>p{
-    font-size: 12px;
+    text-transform: none;
+    font-size: 16px;
 }
 
 
