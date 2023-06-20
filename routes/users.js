@@ -32,10 +32,12 @@ router.get('/alluser',(req,res)=>{
 router.get('/edituser/:id',(req,res)=>{
   let buscarId={_id:req.params.id} 
   User.findOne(buscarId)
-  .then(user=>{
-    res.render('users/edituser',{user:user})
+  
+    .then(usuario=>{
+    res.render('users/edituser',{usuario:usuario})
   })
   .catch(error=>{
+    console.log(error)
     res.flash('error_msg','Error:'+error) //Muestro el error por el que no puede realizar la acción
     res.redirect('users/allusers') /* Redirijo a la página de todos los usuarios con un mensaje de error */
   })
@@ -66,10 +68,10 @@ router.get(('/logout',(req,res)=>{  //No es necesario crear un archivo logout, e
 //Método post
 
 router.post('/registrar', (req, res)=> {
-  let {name, email, password} = req.body;
+  let {nombre, email, password} = req.body;
 
   let userData = {
-      name : name,
+      nombre : nombre,
       email :email
   };
 
@@ -165,6 +167,40 @@ router.post('/olvido',(req,res)=>{
       }
   ]) 
 })
+
+//PUT routes starts here
+router.put('/edituser/:id', (req, res)=> {
+  let buscarId = {_id : req.params.id};
+
+  User.updateOne(buscarId, {$set : {
+      name : req.body.name,
+      email : req.body.email
+  }})
+  .then(() => {
+      req.flash('success_msg', 'Los datos se modificaron exitosamente');
+      res.redirect('/alluser');
+  })
+  .catch(err => {
+      req.flash('error_msg', 'ERROR: '+err);
+      res.redirect('/users/alluser');
+  })
+});
+
+//DELETE routes starts here
+router.delete('/delete/user/:id', (req, res)=>{
+  let buscarId = {_id : req.params.id};
+
+  User.deleteOne(buscarId)
+      .then(usuario => {
+          req.flash('success_msg', 'User deleted sucessfully.');
+          res.redirect('/users/alluser');
+      })
+      .catch(err => {
+          req.flash('error_msg', 'ERROR: '+err);
+          res.redirect('/users/all');
+      })
+});
+
 
 export default router
 

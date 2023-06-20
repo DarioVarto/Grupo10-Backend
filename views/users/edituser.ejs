@@ -1,9 +1,31 @@
 <%- include("../partials/head.ejs")%>
 
 <div class="col-9">
+    <div class="container p-3 w-50">
+        <h1 class="text-center mt-5 mb-3">Modificar Usuario</h1>
+        <%- include('../partials/messages') -%>
+        <form action="/edituser/<%= usuario.id%>?_method=PUT" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+
+            <div class="form-group px-0">
+                <input value="<%= usuario.nombre %>" type="text" name="nombre" class="form-control" placeholder="Nombre">
+            </div>
+    
+            <div class="form-group px-0">
+                <input value="<%= usuario.email %>" type="email" name="email" class="form-control" placeholder="Email">
+            </div>
+    
+            <button type="submit" class="btn btn-danger btn-block">Actualizar</button>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') -%>
+
+<!-- <div class="col-9">
     <div class="container p-3 w-100">
         <h1 class="mt-5 mb-4">Actualzar usuario</h1>
-        <form action="/edit" method="post">
+        <form action="/edit/<%= usuario.id%>?_method=PUT" method="post">
             <div class="form-group px-0">
                 <input type="text" name="name" class="form-control" placeholder="ingrese su nombre">
             </div>
@@ -14,6 +36,5 @@
 
         </form>
     </div>
-</div>
+</div> -->
 
-<%- include("../partials/footer.ejs") %>

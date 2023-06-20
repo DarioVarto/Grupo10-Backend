@@ -24,10 +24,10 @@
 
                 <% usuarios.forEach((usuario)=> { %>
                     <tr>
-                        <td><%= usuario.name %></td>
+                        <td><%= usuario.nombre %></td>
                         <td><%= usuario.email %></td>
                         <td>
-                            <a class="btn btn-primary" href="/edit/<%= usuario.id %>">Edit</a>
+                            <a class="btn btn-primary" href="/edituser/<%= usuario.id %>">Edit</a>
                             <form style="display: inline;" action="/delete/usuario/<%= usuario.id %>?_method=DELETE" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button style="cursor: pointer;" type="submit" class="btn btn-danger ml-2">Delete</button>
