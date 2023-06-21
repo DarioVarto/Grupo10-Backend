@@ -14,6 +14,10 @@ router.get('/',(req,res)=>{
   res.render('pages/index')
 })
 
+router.get('/edit',(req,res)=>{
+  res.render('users/edit')
+})
+
 router.get('/registrar', (req,res)=> {
   res.render('./users/registrar');
 });
@@ -21,7 +25,7 @@ router.get('/registrar', (req,res)=> {
 router.get('/alluser',(req,res)=>{
   User.find({})  //Busca y me trae todos los usuarios
   .then(usuarios=>{
-    res.render('users/alluser',{usuarios:usuarios}) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
+    res.render('./users/alluser',{usuarios:usuarios}) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
   })
   .catch(error=>{
     res.render('users/alluser') //Renderizo la página de todos los usuarios
@@ -34,7 +38,7 @@ router.get('/edituser/:id',(req,res)=>{
   User.findOne(buscarId)
   
     .then(usuario=>{
-    res.render('users/edituser',{usuario:usuario})
+    res.render('./users/edituser',{usuario:usuario})
   })
   .catch(error=>{
     console.log(error)
@@ -119,7 +123,7 @@ router.post('/password/change',(req,res)=>{
 })
 
 router.post('/olvido',(req,res)=>{
-  let recoveryPassword=''
+  
   async.waterfall([         //Genera un array de objetos, donde cada objeto es una función
     (done)=>{
         crypto.randomBytes(20,(error,buf)=>{  //Con el método randomBytes genero un password random para ql usuario
@@ -130,15 +134,15 @@ router.post('/olvido',(req,res)=>{
   ,
     (token,done)=>{
         User.findOne({email:req.body.email})
-        .then(user=>{
-          if(!user){
+          .then(usuario=>{
+          if(!usuario){
             //Mensaje que no existe el email
             res.redirect('/olvido')
           }
-          user.resetPasswordToken=token //Propiedad que definimos en el Schema
-          user.resetPasswordExpired=Date.now() + 1800000 //Tiempo en milisegundos
-          user.save(error=>{
-            done(error,token,user)
+          usuario.resetPasswordToken=token //Propiedad que definimos en el Schema
+          usuario.resetPasswordExpired=Date.now() + 1800000 //Tiempo en milisegundos
+          usuario.save(error=>{
+            done(error,token,usuario)
           })
         .catch(error=>{
           //mensaje de error
@@ -146,16 +150,16 @@ router.post('/olvido',(req,res)=>{
           })
         })
     },
-      (token,user)=>{
+      (token,usuario)=>{
         let enviar=nodemailer.createTransport({
           service:'Gmail',
           auth:{
-            user:'grupo10@gmail.com',
+            usuario:'grupo10@gmail.com',
             pass:'Grupo@10'
           }
         })
         let mailOptions={ //Redacto el mail
-          to:user.email,
+          to:usuario.email,
           from:'grupo10@gmail.com',
           subjet:'Recuperar contraseña',
           text:'Para recuperar tu contraseña debes ingresar a : \n'+token+'\n Recuerde que debe hacerlo dentro de los próximos 30 minutos'
@@ -173,7 +177,7 @@ router.put('/edituser/:id', (req, res)=> {
   let buscarId = {_id : req.params.id};
 
   User.updateOne(buscarId, {$set : {
-      name : req.body.name,
+      nombre : req.body.name,
       email : req.body.email
   }})
   .then(() => {
@@ -187,17 +191,16 @@ router.put('/edituser/:id', (req, res)=> {
 });
 
 //DELETE routes starts here
-router.delete('/delete/user/:id', (req, res)=>{
+router.delete('/delete/usuario/:id', (req, res)=>{
   let buscarId = {_id : req.params.id};
-
   User.deleteOne(buscarId)
-      .then(usuario => {
-          req.flash('success_msg', 'User deleted sucessfully.');
-          res.redirect('/users/alluser');
+      .then(() => {
+          req.flash('success_msg', 'Usuario borrado exitosamente');
+          res.redirect('/alluser');
       })
       .catch(err => {
           req.flash('error_msg', 'ERROR: '+err);
-          res.redirect('/users/all');
+          res.redirect('/alluser');
       })
 });
 

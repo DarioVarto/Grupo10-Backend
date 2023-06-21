@@ -1,7 +1,7 @@
 <%- include("../partials/head.ejs")%>
-<%- include('../partials/header') -%>
+<%- include('../partials/header.ejs') -%>
 
-<div class="col-9">
+<div class="col-12">
     <div class="container p-3 w-100">
         <h1 class="mt-5 mb-4">All Users</h1>
         <%- include('../partials/messages') -%>
@@ -28,6 +28,7 @@
                         <td><%= usuario.email %></td>
                         <td>
                             <a class="btn btn-primary" href="/edituser/<%= usuario.id %>">Edit</a>
+                            <input type="hidden" name="_method" value="PUT">
                             <form style="display: inline;" action="/delete/usuario/<%= usuario.id %>?_method=DELETE" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button style="cursor: pointer;" type="submit" class="btn btn-danger ml-2">Delete</button>

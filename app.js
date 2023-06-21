@@ -79,7 +79,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.set('view engine', 'ejs');
 
-app.use(express.static('public')); //Conexión a carpeta public
+app.use(express.static('./public')); //Conexión a carpeta public
 
 app.use(userRoutes);
 

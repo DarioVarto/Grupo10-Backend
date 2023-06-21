@@ -103,14 +103,13 @@ body{
     border: solid 2px transparent;
  }
  .btn-registrar{
-    font-size: 1.2rem;
-    padding: 1rem;
-    letter-spacing: 0.2rem;
+   
     text-transform: uppercase;
     border: 1px solid transparent;
     margin-top: 1rem;
-    border-radius: 2rem;
+  
  }
+ 
  
 @media(max-width:1600px){
     .hero-title{
