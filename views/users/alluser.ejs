@@ -1,37 +1,47 @@
 <%- include("../partials/head.ejs")%>
+<%- include('../partials/header.ejs') -%>
 
-<div class="col-9">
+<div class="col-12">
     <div class="container p-3 w-100">
-        <h1 class="mt-5 mb-4">Usuarios</h1>
-        <%- include("../partials/mensajes.ejs")%>
-        <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
+        <h1 class="mt-5 mb-4">All Users</h1>
+        <%- include('../partials/messages') -%>
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Nombre</th>
+                    <th>Name</th>
                     <th>Email</th>
-                    <th>Acciones</th>
-
+                    <th>Actions</th>
                 </tr>
-
             </thead>
-            <tbody>
-                <%usuarios.forEach(usuario=>{%>  <!-- Realizo un for por la variable usuarios que envie en users.js -->
+            <tfoot>
                 <tr>
-                    <td><%=usuario.nombre%></td> 
-                <td><%usuario.email%></td> 
-               <td>
-                <a class="btn btn-primary" href="/edit/<%=usuario.id%>">editar</a>  
-                <form action="/delete/user/" method="">
-                    <button class="btn btn-danger ml-2">Eliminar</button>
-                </form>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+            <tbody>
+
+                <% usuarios.forEach((usuario)=> { %>
+                    <tr>
+                        <td><%= usuario.nombre %></td>
+                        <td><%= usuario.email %></td>
+                        <td>
+                            <a class="btn btn-primary" href="/edituser/<%= usuario.id %>">Edit</a>
+                            <input type="hidden" name="_method" value="PUT">
+                            <form style="display: inline;" action="/delete/usuario/<%= usuario.id %>?_method=DELETE" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button style="cursor: pointer;" type="submit" class="btn btn-danger ml-2">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }); %>
                 
-            
-            </td> 
-            </tr>
-            <%})%>
             </tbody>
         </table>
     </div>
 </div>
+</div>
 
-<%- include("../partials/footer.ejs") %>
+<%- include('../partials/footer') -%>

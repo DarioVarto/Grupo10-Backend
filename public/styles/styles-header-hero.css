@@ -103,6 +103,14 @@ body{
     text-align: center;
     border: solid 2px transparent;
  }
+ .btn-registrar{
+   
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    margin-top: 1rem;
+  
+ }
+ 
  
 @media(max-width:1600px){
     .hero-title{
