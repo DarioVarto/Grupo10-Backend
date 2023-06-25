@@ -14,6 +14,32 @@ router.get('/', (req, res) => {
   res.render('pages/index')
 })
 
+router.get('/contacto', (req, res) => { //link contacto footer
+  res.render('pages/contacto')
+})
+
+router.get('/nosotros', (req, res) => { //link nosotros footer
+  res.render('pages/nosotros')
+})
+
+router.get('/historia', (req, res) => { //link historia footer
+  res.render('pages/historia')
+})
+
+router.get('/soporte', (req, res) => { //link soporte footer
+  res.render('pages/soporte')
+})
+
+router.get('/informacion', (req, res) => { //link informacion footer
+  res.render('pages/informacion')
+})
+router.get('/privacidad', (req, res) => { //link privacidad footer
+  res.render('pages/privacidad')
+})
+router.get('/terminos', (req, res) => { //link terminos footer
+  res.render('pages/terminos')
+})
+
 router.get('/edit', (req, res) => {
   res.render('users/edit')
 })
