@@ -88,16 +88,10 @@ router.get('/edituser/:id', (req, res) => {
     })
 })
 
-<<<<<<< HEAD
 router.get('/login',(req, res) =>{
   res.render('users/login', { message: req.flash('error_msg','loginMessage') })
 });
 
-=======
-router.get('/login', (req, res) => {
-  res.render('users/login')
-})
->>>>>>> 03d4a87a2317762085d768f462de17954c642034
 
 router.get('/olvido', (req, res) => {
   res.render('users/olvido')
@@ -142,7 +136,6 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-<<<<<<< HEAD
 router.post('/login', 
   passport.authenticate('local', { 
   successRedirect : '/',
@@ -152,13 +145,6 @@ router.post('/login',
 })
  );
 
-=======
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/registar',
-  failureFlash: 'email o contraseña incorrecta. Intente nuevamente'
-}))
->>>>>>> 03d4a87a2317762085d768f462de17954c642034
 
 router.post('/password/change', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
