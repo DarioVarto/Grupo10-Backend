@@ -1,6 +1,7 @@
 body{
     padding:0 60px;
     font-family: 'Source Sans Pro', sans-serif;
+    overflow-x: hidden;
  }
  a, span, p {
      color: black;
@@ -102,6 +103,14 @@ body{
     text-align: center;
     border: solid 2px transparent;
  }
+ .btn-registrar{
+   
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    margin-top: 1rem;
+  
+ }
+ 
  
 @media(max-width:1600px){
     .hero-title{
