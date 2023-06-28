@@ -45,6 +45,7 @@ mongoose.connect(process.env.MONGO_GRUPO10, {
 .then(con => {
     console.log('La base de datos está conectada');
 });
+import productRouter from './routes/products-detail.js' 
 
 
 app.use(session({
@@ -84,7 +85,24 @@ app.use(express.static('public')); //Conexión a carpeta public
 app.use(userRoutes);
 
 app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({extended:true}))
+app.set('view engine','ejs')
+app.use(express.static('public'))
 
-app.listen(process.env.PORT, ()=> {
-    console.log('El servidor está conectado');
-});
+app.use(flash())
+
+app.use(userRouter)
+
+dotenv.config({path:'./config.env'})
+
+mongoose.connect(process.env.MONGO_GRUPO10) 
+.then(()=>console.log('la base de datos esta conectada'))
+.catch(error=>console.log('error'))
+
+
+    
+
+app.listen(process.env.PORT,()=>{
+    console.log('el servidor se está ejecutando')
+    console.log(process.env.PORT)
+})
