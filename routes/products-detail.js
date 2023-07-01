@@ -12,6 +12,12 @@ router.get('/details',(req,res)=>{
 })
 
 
+router.get('/carrito',(req,res)=>{
+  res.render('products/carrito')
+})
+
+
+
 export default router
 
 
