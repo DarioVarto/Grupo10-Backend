@@ -4,9 +4,24 @@ import passport from "passport"
 import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
-import mongoose from 'mongoose'
+
+import LocalStrategy from 'passport-local'
 
 import User from '../models/usermodels.js'
+
+passport.use(new LocalStrategy(
+  function(email, password, done) {
+    User.findOne({ email: email }, function (err, usuario) {
+      if (err) { return done(err); }
+      if (!usuario) { return done(null, false); }
+      if (!usuario.verifyPassword(password)) { return done(null, false); }
+      return done(null, usuario);
+    });
+  }
+));
+
+
+
 
 //Peticiones get
 
@@ -73,9 +88,10 @@ router.get('/edituser/:id', (req, res) => {
     })
 })
 
-router.get('/login', (req, res) => {
-  res.render('users/login')
-})
+router.get('/login',(req, res) =>{
+  res.render('users/login', { message: req.flash('error_msg','loginMessage') })
+});
+
 
 router.get('/olvido', (req, res) => {
   res.render('users/olvido')
@@ -120,11 +136,15 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/registar',
-  failureFlash: 'email o contraseña incorrecta. Intente nuevamente'
-}))
+router.post('/login', 
+  passport.authenticate('local', { 
+  successRedirect : '/',
+  failureRedirect : '/login',
+  failureFlash: 'Usuario o contraseña incorrecta'
+
+})
+ );
+
 
 router.post('/password/change', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
