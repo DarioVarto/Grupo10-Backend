@@ -45,7 +45,8 @@ mongoose.connect(process.env.MONGO_GRUPO10, {
 })
 .then(con => {
     console.log('La base de datos está conectada');
-});
+})
+.catch(error=>console.log('error'));
 
 app.use(session({
     secret : 'El usuario esta conectado',
@@ -94,14 +95,11 @@ app.use(flash())
 
 dotenv.config({path:'./config.env'})
 
-mongoose.connect(process.env.MONGO_GRUPO10) 
-.then(()=>console.log('la base de datos esta conectada'))
-.catch(error=>console.log('error'))
+
 
 
     
 
 app.listen(process.env.PORT,()=>{
     console.log('el servidor se está ejecutando')
-    console.log(process.env.PORT)
 })
