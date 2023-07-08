@@ -10,10 +10,14 @@
             <input class="link-item" type="text" placeholder="SEARCH">
         </div>
         <div class="col-md-4 text-end d-flex justify-content-end align-items-center registro">
-            <a class="link-item" href="#">SING IN</a>
+          <% if (userName !== '') { %>
+            <a href="#"><%= userName %></a>
+          <% } else { %>
+            <a class="link-item" href="#">SIGN IN</a>
+          <% } %>
             <a class="link-item remove-pad-right" href="#">CART <span>0</span></a>
         </div>
-      </div> 
+      </div>
       
       <!--   navbar -->
      
