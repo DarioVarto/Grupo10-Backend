@@ -4,9 +4,24 @@ import passport from "passport"
 import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
-import mongoose from 'mongoose'
+
+import LocalStrategy from 'passport-local'
 
 import User from '../models/usermodels.js'
+
+passport.use(new LocalStrategy(
+  function(email, password, done) {
+    User.findOne({ email: email }, function (err, usuario) {
+      if (err) { return done(err); }
+      if (!usuario) { return done(null, false); }
+      if (!usuario.verifyPassword(password)) { return done(null, false); }
+      return done(null, usuario);
+    });
+  }
+));
+
+
+
 
 //Peticiones get
 
@@ -73,9 +88,12 @@ router.get('/edituser/:id', (req, res) => {
     })
 })
 
-router.get('/login', (req, res) => {
+router.get('/login',(req, res) =>{
   res.render('users/login')
-})
+});
+
+
+
 
 router.get('/olvido', (req, res) => {
   res.render('users/olvido')
@@ -102,14 +120,16 @@ router.post('/registrar', (req, res) => {
 
   let userData = {
     nombre: nombre,
-    email: email
+    email: email,
+    esAdmin:false
   };
 
-  User.register(userData, password, (err, user) => {
+  User.register(userData, password, (err, useruario) => {
     if (err) {
       req.flash('error_msg', 'ERROR: ' + err);
       res.redirect('/registrar');
     } else {
+      req.flash('success_msg', 'Usuario registrado exitosamente');
       res.redirect('/login');
     }
 
@@ -120,27 +140,46 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/registar',
-  failureFlash: 'email o contraseña incorrecta. Intente nuevamente'
-}))
+  router.post('/login', 
+(req, res, next)=>{
+  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
+
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+      
+    }
+    if(usuario.esAdmin){
+      return res.redirect('/alluser');
+    }else{
+      return res.redirect('/')
+    };
+
+  })(req, res, next)
+   
+  
+  )
+}
+); 
 
 router.post('/password/change', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
-    //mensaje no son iguales
-    res.redirect('/password/change')
+    req.flash('error_msg', 'Las contraseñas no coinciden');
+    return res.redirect('/password/change')
   }
   User.findOne({ email: req.user.email })
-    .then(user => {
-      user.setPassword(req.body.password, error => {
-        user.save()
-          .then(user => {
-            //mensaje se cambio la contraseña
+    .then(usuario => {
+      usuario.setPassword(req.body.password, error => {
+        usuario.save()
+          .then(usuario => {
+            req.flash('success_msg', 'La contraseña se modifico exitosamente');
             res.redirect('/login')
           })
           .catch(error => {
-            //mensaje error
+            req.flash('error_msg', 'Error:'+error)
             res.redirect('/password/change')
           })
       })
