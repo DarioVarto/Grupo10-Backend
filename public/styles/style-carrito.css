@@ -141,6 +141,7 @@
     padding: 5px;
     text-align: center;
     color: white;
+    font-weight: bold;
 }
 .carrito .carrito-item .selector-cantidad i{
     font-size: 18px;
