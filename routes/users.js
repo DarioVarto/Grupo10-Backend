@@ -251,7 +251,7 @@ router.put('/edituser/:id', (req, res) => {
 
   User.updateOne(buscarId, {
     $set: {
-      nombre: req.body.name,
+      nombre: req.body.nombre,
       email: req.body.email
     }
   })
