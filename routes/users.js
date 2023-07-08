@@ -26,7 +26,8 @@ passport.use(new LocalStrategy(
 //Peticiones get
 
 router.get('/', (req, res) => {
-  res.render('pages/index')
+  const userName = req.query.userName;
+  res.render('pages/index', { userName });
 })
 
 router.get('/contacto', (req, res) => { //link contacto footer
@@ -92,6 +93,9 @@ router.get('/login',(req, res) =>{
   res.render('users/login')
 });
 
+router.get('/usuarioRegistrado',(req, res) =>{
+  res.render('pages/usuarioRegistrado')
+});
 
 
 
@@ -154,8 +158,12 @@ router.post('/registrar', (req, res) => {
     }
     if(usuario.esAdmin){
       return res.redirect('/alluser');
-    }else{
-      return res.redirect('/')
+    }else{ 
+      const userName=usuario.email
+     console.log(userName)
+     res.redirect('/?userName=' + encodeURIComponent(userName));
+     
+    
     };
 
   })(req, res, next)
