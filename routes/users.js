@@ -89,8 +89,10 @@ router.get('/edituser/:id', (req, res) => {
 })
 
 router.get('/login',(req, res) =>{
-  res.render('users/login', { message: req.flash('error_msg','loginMessage') })
+  res.render('users/login')
 });
+
+
 
 
 router.get('/olvido', (req, res) => {
@@ -118,14 +120,16 @@ router.post('/registrar', (req, res) => {
 
   let userData = {
     nombre: nombre,
-    email: email
+    email: email,
+    esAdmin:false
   };
 
-  User.register(userData, password, (err, user) => {
+  User.register(userData, password, (err, useruario) => {
     if (err) {
       req.flash('error_msg', 'ERROR: ' + err);
       res.redirect('/registrar');
     } else {
+      req.flash('success_msg', 'Usuario registrado exitosamente');
       res.redirect('/login');
     }
 
@@ -136,31 +140,46 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-router.post('/login', 
-  passport.authenticate('local', { 
-  successRedirect : '/',
-  failureRedirect : '/login',
-  failureFlash: 'Usuario o contraseña incorrecta'
+  router.post('/login', 
+(req, res, next)=>{
+  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
 
-})
- );
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+      
+    }
+    if(usuario.esAdmin){
+      return res.redirect('/alluser');
+    }else{
+      return res.redirect('/')
+    };
 
+  })(req, res, next)
+   
+  
+  )
+}
+); 
 
 router.post('/password/change', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
-    //mensaje no son iguales
-    res.redirect('/password/change')
+    req.flash('error_msg', 'Las contraseñas no coinciden');
+    return res.redirect('/password/change')
   }
   User.findOne({ email: req.user.email })
-    .then(user => {
-      user.setPassword(req.body.password, error => {
-        user.save()
-          .then(user => {
-            //mensaje se cambio la contraseña
+    .then(usuario => {
+      usuario.setPassword(req.body.password, error => {
+        usuario.save()
+          .then(usuario => {
+            req.flash('success_msg', 'La contraseña se modifico exitosamente');
             res.redirect('/login')
           })
           .catch(error => {
-            //mensaje error
+            req.flash('error_msg', 'Error:'+error)
             res.redirect('/password/change')
           })
       })

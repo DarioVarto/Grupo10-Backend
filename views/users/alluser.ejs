@@ -25,7 +25,7 @@
                 <% usuarios.forEach((usuario)=> { %>
                     <tr>
                         <td><%= usuario.nombre %></td>
-                        <td><%= usuario.email %></td>
+                        <td><%= usuario.email %></td>     
                         <td>
                             <a class="btn btn-primary" href="/edituser/<%= usuario.id %>">Edit</a>
                             <input type="hidden" name="_method" value="PUT">
@@ -34,6 +34,7 @@
                                 <button style="cursor: pointer;" type="submit" class="btn btn-danger ml-2">Delete</button>
                             </form>
                         </td>
+                        <td><%= usuario.esAdmin %></td>
                     </tr>
 
                 <% }); %>
