@@ -245,6 +245,12 @@ router.post('/olvido', (req, res) => {
   ])
 })
 
+router.post('/logout', (req, res) => {
+  req.logOut();
+  req.flash('success_msg', 'Su sesión ha finalizado correctamente');
+  res.redirect('/pages/index');
+});
+
 //PUT routes starts here
 router.put('/edituser/:id', (req, res) => {
   let buscarId = { _id: req.params.id };

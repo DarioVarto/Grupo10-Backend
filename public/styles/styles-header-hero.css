@@ -110,6 +110,11 @@ body{
     margin-top: 1rem;
   
  }
+ .userName{
+    color: black;
+    background-color: transparent;
+    border: 2px solid transparent;
+ }
  
  
 @media(max-width:1600px){
