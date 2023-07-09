@@ -160,7 +160,6 @@ router.post('/registrar', (req, res) => {
       return res.redirect('/alluser');
     }else{ 
       const userName=usuario.email
-     console.log(userName)
      res.redirect('/?userName=' + encodeURIComponent(userName));
      
     
