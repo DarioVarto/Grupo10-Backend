@@ -75,7 +75,7 @@ function ensureAuthenticated(req, res, next) {
 
 //Peticiones get
 
-router.get('/index',(req, res) => {
+router.get('/',(req, res) => {
   const userName = req.query.userName;
   res.render('pages/index', { userName });
 })
