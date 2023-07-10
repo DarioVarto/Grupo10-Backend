@@ -51,6 +51,7 @@ router.post('/login', (req, res, next) => {
       return res.redirect('/login');
     }
     if (usuario.esAdmin) {
+      req.flash('success_msg', '🟢🟢🟢BIENVENIDO', (usuario.nombre).toUpperCase(), 'USTED ES EL ADMINISTRADOR✅✅✅')
       return res.redirect('/alluser');
     } else {
       let userName = usuario.email;
@@ -58,6 +59,7 @@ router.post('/login', (req, res, next) => {
         if (err) {
           return next(err);
         }
+        
         return res.render('pages/index', { userName: userName });
       });
     }
@@ -70,14 +72,15 @@ function ensureAuthenticated(req, res, next) {
     
     return next();
   }
+  req.flash('success_msg', ' 💻💻💻 Para Navegar en la Web debe Loguearse por favor! 🆗🆗🆗')
   res.redirect('/login');
 }
 
 //Peticiones get
 
 router.get('/',(req, res) => {
-  const userName = req.query.userName;
-  res.render('pages/index', { userName });
+ const userName = req.query.userName;
+  res.render('pages/index', { userName: userName });
 })
 
 router.get('/contacto', ensureAuthenticated,(req, res) => { //link contacto footer
@@ -152,7 +155,7 @@ router.get('/edituser/:id', (req, res) => {
     })
 })
 
-router.get('/login',(req, res) =>{
+router.get('/login', (req, res) => {
   res.render('users/login')
 });
 
@@ -172,7 +175,7 @@ router.get(('/logout', (req, res) => {  //No es necesario crear un archivo logou
   //Mensaje para el usuario que se deslogueo
   req.logOut(); //Método propio de nodejs para cerrar sesión
   res.flash('success_msg', 'Su sesión ha finalizado correctamente')
-  res.redirect('pages/index')
+  res.redirect('/login')
 }))
 
 //Método post
@@ -183,15 +186,15 @@ router.post('/registrar', (req, res) => {
   let userData = {
     nombre: nombre,
     email: email,
-    esAdmin:false
+    esAdmin: false
   };
 
-  User.register(userData, password, (err, useruario) => {
+  User.register(userData, password, (err, usuario) => {
     if (err) {
       req.flash('error_msg', 'ERROR: ' + err);
       res.redirect('/registrar');
     } else {
-      req.flash('success_msg', 'Usuario registrado exitosamente');
+      req.flash('success_msg', 'Usuario' , (usuario.email).toUpperCase(),'registrado exitosamente');
       res.redirect('/login');
     }
 
@@ -202,7 +205,7 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
- /*  router.post('/login', 
+  router.post('/login', 
 (req, res, next)=>{
   passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
     if (err) {
@@ -215,12 +218,10 @@ router.post('/registrar', (req, res) => {
       
     }
     if(usuario.esAdmin){
+      
       return res.redirect('/alluser');
-    }else{ 
-      let userName=usuario.email
-     res.render('pages/index', { userName: userName })
-     
-    
+    }else{
+      return res.redirect('/')
     };
 
   })(req, res, next)
@@ -228,12 +229,12 @@ router.post('/registrar', (req, res) => {
   
   )
 }
-);  */
+); 
 
-router.post('/password/change', (req, res) => {
+router.post('/changepassword', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
     req.flash('error_msg', 'Las contraseñas no coinciden');
-    return res.redirect('/password/change')
+    return res.redirect('/changepassword')
   }
   User.findOne({ email: req.user.email })
     .then(usuario => {
@@ -244,14 +245,16 @@ router.post('/password/change', (req, res) => {
             res.redirect('/login')
           })
           .catch(error => {
-            req.flash('error_msg', 'Error:'+error)
-            res.redirect('/password/change')
+            req.flash('error_msg', 'Error:' + error)
+            res.redirect('/changepassword')
           })
       })
     })
 
 })
 
+
+//olvido password
 router.post('/olvido', (req, res) => {
 
   async.waterfall([         //Genera un array de objetos, donde cada objeto es una función
@@ -285,7 +288,7 @@ router.post('/olvido', (req, res) => {
         service: 'Gmail',
         auth: {
           usuario: 'grupo10@gmail.com',
-          pass: 'Grupo@10'
+          pass: 'kjiceexxxtfguhzj'
         }
       })
       let mailOptions = { //Redacto el mail
