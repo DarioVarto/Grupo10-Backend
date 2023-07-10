@@ -10,7 +10,7 @@ import LocalStrategy from 'passport-local'
 import User from '../models/usermodels.js'
 
 passport.use(new LocalStrategy(
-  function(email, password, done) {
+  function (email, password, done) {
     User.findOne({ email: email }, function (err, usuario) {
       if (err) { return done(err); }
       if (!usuario) { return done(null, false); }
@@ -88,7 +88,7 @@ router.get('/edituser/:id', (req, res) => {
     })
 })
 
-router.get('/login',(req, res) =>{
+router.get('/login', (req, res) => {
   res.render('users/login')
 });
 
@@ -110,7 +110,7 @@ router.get(('/logout', (req, res) => {  //No es necesario crear un archivo logou
   //Mensaje para el usuario que se deslogueo
   req.logOut(); //Método propio de nodejs para cerrar sesión
   res.flash('success_msg', 'Su sesión ha finalizado correctamente')
-  res.redirect('pages/index')
+  res.redirect('/login')
 }))
 
 //Método post
@@ -121,7 +121,7 @@ router.post('/registrar', (req, res) => {
   let userData = {
     nombre: nombre,
     email: email,
-    esAdmin:false
+    esAdmin: false
   };
 
   User.register(userData, password, (err, useruario) => {
@@ -140,35 +140,35 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-  router.post('/login', 
-(req, res, next)=>{
-  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!usuario) {
+router.post('/login',
+  (req, res, next) => {
+    passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
+      if (err) {
+        return next(err);
+      }
+      if (!usuario) {
 
-      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-      return res.redirect('/login');
-      
-    }
-    if(usuario.esAdmin){
-      return res.redirect('/alluser');
-    }else{
-      return res.redirect('/')
-    };
+        req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+        return res.redirect('/login');
 
-  })(req, res, next)
-   
-  
-  )
-}
-); 
+      }
+      if (usuario.esAdmin) {
+        return res.redirect('/alluser');
+      } else {
+        return res.redirect('/')
+      };
 
-router.post('/password/change', (req, res) => {
+    })(req, res, next)
+
+
+    )
+  }
+);
+//cambiar password 
+router.post('/changepassword', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
     req.flash('error_msg', 'Las contraseñas no coinciden');
-    return res.redirect('/password/change')
+    return res.redirect('/changepassword')
   }
   User.findOne({ email: req.user.email })
     .then(usuario => {
@@ -179,14 +179,14 @@ router.post('/password/change', (req, res) => {
             res.redirect('/login')
           })
           .catch(error => {
-            req.flash('error_msg', 'Error:'+error)
-            res.redirect('/password/change')
+            req.flash('error_msg', 'Error:' + error)
+            res.redirect('/changepassword')
           })
       })
     })
 
 })
-
+//olvido password
 router.post('/olvido', (req, res) => {
 
   async.waterfall([         //Genera un array de objetos, donde cada objeto es una función
