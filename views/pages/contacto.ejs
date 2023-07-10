@@ -3,7 +3,21 @@
     <%- include("../partials/navBar.ejs") %>
         <div class="container-fluid pb-1" style="background-color: gray">
             <h1>CONTACTO</h1>
-            <h1>aca va el formulario de contacto</h1>
+            
+            <div class="mb-3">
+                <form  action="https://formspree.io/f/xyyqgakn" method="POST">
+                    <label for="exampleFormControlInput1" class="form-label">Tu Email</label>
+                    <input type="email" name="email" class="form-control" id="exampleFormControlInput1"
+                        placeholder="nombre@ejemplo.com">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Tu Mensaje</label>
+                <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-primary" type="submit">Enviar mensaje</button>
+            </div>
+            </form>
             <p class="text-center pt-2 fw-semibold fs-5">Escribinos por Whatsapp &nbsp; &nbsp;
                 <a href="https://wa.me/11223344/?text=Escribi%20tu%20mensaje:" target="_blank">
                     <img src="../imagenes/whatsapp.png" width="50" height="50">
