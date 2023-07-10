@@ -9,49 +9,23 @@
       <input class="link-item" type="text" placeholder="BUSCAR">
     </div>
     <div class="col-md-4 text-end d-flex justify-content-end align-items-center registro">
-      <a class="link-item" href="#">ENTRAR</a>
+      <% if (userName) { %>
+           
+         <button class="btn dropdown-toggle userName" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= userName %></button>
+         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/changepassword">Modificar contraseña</a>
+          <form action="/logout" method="post">
+            <button class="dropdown-item" type="submit">Cerrar sesión</button>
+          </form>
+        </div>
+      <% } else { %>
+        <a href="/login">Ingresar</a>
+      <% } %>
+
       <a class="link-item remove-pad-right" href="#">CARRITO <span class="text-danger fw-bold" id="numero-cantidad">0</span></a>
     </div>
   </div>
 
-  <!--   navbar -->
 
-  <nav class="navbar navbar-expand-lg border-bottom">
-    <a class="navbar-brand" href="/">
-      <img src="imagenes/marvel_logo.png" class="logo-marvel" alt="Logo de tienda marvel">
-    </a>
-    <div class="mobile-search">
-      <input class="link-item" type="text" placeholder="SEARCH">
-    </div>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="link-item">
-          <a href="/login">Mi Cuenta</a>
-        </li>
-        <li class="link-item">
-          <a href="/historia">Historia</a>
-        </li>
-        <li class="link-item">
-          <a href="/nosotros">Acerca de Nosotros</a>
-        </li>
-        <li class="link-item">
-          <a href="/contacto">Contacto</a>
-        </li>
-        <li class="link-item">
-          <a href="/privacidad">Privacidad</a>
-        </li>
-        <li class="link-item">
-          <a href="/terminos">Terminos</a>
-        </li>
-        <li class="link-item remove-pad-right">
-          <a class="text-danger fw-bold" href="/carrito">Carrito de pureba</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
 
-</header>
+  

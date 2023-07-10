@@ -5,12 +5,16 @@ import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
 
-import LocalStrategy from 'passport-local'
+import LocalStrategy from 'passport-local';
 
 import User from '../models/usermodels.js'
 
-passport.use(new LocalStrategy(
-  function (email, password, done) {
+
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+},
+  function(email, password, done) {
     User.findOne({ email: email }, function (err, usuario) {
       if (err) { return done(err); }
       if (!usuario) { return done(null, false); }
@@ -19,44 +23,104 @@ passport.use(new LocalStrategy(
     });
   }
 ));
+/* router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+    }
+    if (usuario.esAdmin) {
+      return res.redirect('/alluser');
+    } else {
+      let userName = usuario.email;
+      
+      res.render('pages/index', { userName: userName });
+    }
+  })(req, res, next);
+}); */
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+    }
+    if (usuario.esAdmin) {
+      return res.redirect('/alluser');
+    } else {
+      let userName = usuario.email;
+      req.login(usuario, (err) => {
+        if (err) {
+          return next(err);
+        }
+        return res.render('pages/index', { userName: userName });
+      });
+    }
+  })(req, res, next);
+});
 
-
-
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    req.usuario = req.user;
+    
+    return next();
+  }
+  res.redirect('/login');
+}
 
 //Peticiones get
 
-router.get('/', (req, res) => {
-  res.render('pages/index')
+router.get('/',(req, res) => {
+  const userName = req.query.userName;
+  res.render('pages/index', { userName });
 })
 
-router.get('/contacto', (req, res) => { //link contacto footer
-  res.render('pages/contacto')
+router.get('/contacto', ensureAuthenticated,(req, res) => { //link contacto footer
+  let userName = req.usuario.email;
+  if (userName){
+    res.render('pages/contacto', { userName: userName })
+  }
+  else{
+    res.render('pages/contacto')
+  }
 })
 
-router.get('/nosotros', (req, res) => { //link nosotros footer
-  res.render('pages/nosotros')
+router.get('/nosotros', ensureAuthenticated, (req, res) => {
+  let userName = req.usuario.email;
+  res.render('pages/nosotros', { userName: userName });
+});
+
+router.get('/historia', ensureAuthenticated, (req, res) => { //link historia footer
+  let userName = req.usuario.email;
+  res.render('pages/historia', { userName: userName })
 })
 
-router.get('/historia', (req, res) => { //link historia footer
-  res.render('pages/historia')
+router.get('/soporte', ensureAuthenticated, (req, res) => { //link soporte footer
+  let userName = req.usuario.email;
+  res.render('pages/soporte', { userName: userName })
 })
 
-router.get('/soporte', (req, res) => { //link soporte footer
-  res.render('pages/soporte')
+router.get('/informacion', ensureAuthenticated, (req, res) => { //link informacion footer
+  let userName = req.usuario.email;
+  res.render('pages/informacion', { userName: userName })
+})
+router.get('/privacidad', ensureAuthenticated, (req, res) => { //link privacidad footer
+  let userName = req.usuario.email;
+  res.render('pages/privacidad', { userName: userName })
+})
+router.get('/terminos', ensureAuthenticated, (req, res) => { //link terminos footer
+  let userName = req.usuario.email;
+  res.render('pages/terminos', { userName: userName })
 })
 
-router.get('/informacion', (req, res) => { //link informacion footer
-  res.render('pages/informacion')
-})
-router.get('/privacidad', (req, res) => { //link privacidad footer
-  res.render('pages/privacidad')
-})
-router.get('/terminos', (req, res) => { //link terminos footer
-  res.render('pages/terminos')
-})
-
-router.get('/edit', (req, res) => {
-  res.render('users/edit')
+router.get('/edit', ensureAuthenticated, (req, res) => {
+  let userName = req.usuario.email;
+  res.render('users/edit', { userName: userName })
 })
 
 router.get('/registrar', (req, res) => {
@@ -91,8 +155,6 @@ router.get('/edituser/:id', (req, res) => {
 router.get('/login', (req, res) => {
   res.render('users/login')
 });
-
-
 
 
 router.get('/olvido', (req, res) => {
@@ -140,32 +202,32 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-router.post('/login',
-  (req, res, next) => {
-    passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
-      if (err) {
-        return next(err);
-      }
-      if (!usuario) {
+  router.post('/login', 
+(req, res, next)=>{
+  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
 
-        req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-        return res.redirect('/login');
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+      
+    }
+    if(usuario.esAdmin){
+      return res.redirect('/alluser');
+    }else{
+      return res.redirect('/')
+    };
 
-      }
-      if (usuario.esAdmin) {
-        return res.redirect('/alluser');
-      } else {
-        return res.redirect('/')
-      };
+  })(req, res, next)
+   
+  
+  )
+}
+); 
 
-    })(req, res, next)
-
-
-    )
-  }
-);
-//cambiar password 
-router.post('/changepassword', (req, res) => {
+router.post('/password/change', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
     req.flash('error_msg', 'Las contraseñas no coinciden');
     return res.redirect('/changepassword')
@@ -237,13 +299,28 @@ router.post('/olvido', (req, res) => {
   ])
 })
 
+/* router.post('/logout', (req, res) => {
+  req.logOut();
+  req.flash('success_msg', 'Su sesión ha finalizado correctamente');
+  res.redirect('/pages/index');
+}); */
+router.post('/logout', (req, res) => {
+  req.logout(function(err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash('success_msg', 'Su sesión ha finalizado correctamente');
+    res.redirect('/login');
+  });
+});
+
 //PUT routes starts here
 router.put('/edituser/:id', (req, res) => {
   let buscarId = { _id: req.params.id };
 
   User.updateOne(buscarId, {
     $set: {
-      nombre: req.body.name,
+      nombre: req.body.nombre,
       email: req.body.email
     }
   })

@@ -66,16 +66,12 @@
 }
 
 /* ESTILOS FOOTER */
-.marvel-footer{
-    padding-top: 10px;
-}
 .logo-marvel {
     width: 150px;
 }
 
 .box-footer-maxi {
     font-weight: bold;
-    padding: 15px;
 }
 
 .p-footer {
@@ -83,19 +79,7 @@
     font-weight: bold;
     text-transform: none
 }
-
-.p-footer2 p {
+ .p-footer2 p {
     margin-left: 55px;
-}
+ }
 
-/*media queries*/
-@media (max-width: 400px) {
-    .marvel-footer {
-        text-align: center;
-    }
-
-    .box-footer-maxi {
-        text-align: center;
-        
-    }
-}
