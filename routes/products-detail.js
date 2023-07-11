@@ -5,19 +5,21 @@ import passport from 'passport'
 import Producto from '../models/products.js'
 
 // Crear una función para cargar los productos en la base de datos
-/* async function cargarProductos() {
+ async function cargarProductos() {
   try {
     // Crear un arreglo de productos
     const productos = [
       {
-        nombre: 'Producto 1',
-        descripcion: 'Descripción del producto 1',
-        precio: 10.99
+        nombre: 'Producto 3',
+        descripcion: 'Descripción del producto 3',
+        stock:20,
+        precio: 200
       },
       {
-        nombre: 'Producto 2',
-        descripcion: 'Descripción del producto 2',
-        precio: 19.99
+        nombre: 'Producto 4',
+        descripcion: 'Descripción del producto 4',
+        stock:30,
+        precio: 250
       },
       // Agrega más productos aquí si es necesario
     ];
@@ -28,10 +30,10 @@ import Producto from '../models/products.js'
   } catch (error) {
     console.error('Error al cargar los productos', error);
   } 
-} */
+} 
 
 // Llamar a la función para cargar los productos
-/* cargarProductos(); */
+/*  cargarProductos();  */
 
 router.get('/details', (req, res) => {
   let userName = req.user ? req.user.email : '';
@@ -49,7 +51,7 @@ router.get('/prod', (req, res) => {
 
 })
 router.post('/carrito/agregar', (req, res) => {
-  const { nombre, descripcion, precio } = req.body;
+  const { nombre, descripcion, precio,stock } = req.body;
   
   if (!req.session.carrito) {
     req.session.carrito = [];
@@ -57,8 +59,8 @@ router.post('/carrito/agregar', (req, res) => {
   }
   
   const precioNum = parseFloat(precio); // Convierte el precio a un número
-  
-  req.session.carrito.push({ nombre, descripcion, precio: precioNum }); // Guarda el precio como un número en el carrito
+  const stockNum = parseInt(stock)
+  req.session.carrito.push({ nombre, descripcion, precio: precioNum, stock:stockNum }); // Guarda el precio como un número en el carrito
   
   req.session.total += precioNum; // Actualiza la suma total
   
