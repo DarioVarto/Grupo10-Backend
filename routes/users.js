@@ -245,7 +245,7 @@ router.post('/changepassword', (req, res) => {
             res.redirect('/login')
           })
           .catch(error => {
-            req.flash('error_msg', 'Error:' + error)
+            req.flash('error_msg', 'Error:'+error)
             res.redirect('/changepassword')
           })
       })
