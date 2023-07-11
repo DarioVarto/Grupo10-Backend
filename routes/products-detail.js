@@ -5,7 +5,7 @@ import passport from 'passport'
 import Producto from '../models/products.js'
 
 // Crear una función para cargar los productos en la base de datos
-async function cargarProductos() {
+/* async function cargarProductos() {
   try {
     // Crear un arreglo de productos
     const productos = [
@@ -28,44 +28,47 @@ async function cargarProductos() {
   } catch (error) {
     console.error('Error al cargar los productos', error);
   } 
-}
+} */
 
 // Llamar a la función para cargar los productos
-cargarProductos();
+/* cargarProductos(); */
 
 router.get('/details', (req, res) => {
   let userName = req.user ? req.user.email : '';
   res.render('products/details', { userName: userName });
 });
 
+router.get('/prod', (req, res) => {
+  Producto.find({})  //Busca y me trae todos los usuarios
+    .then(productos => {
+      res.render('./products/prod', { productos: productos }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
+    })
+    .catch(error => {
+      res.render('products/prod') //Renderizo la página de todos los usuarios
+    })
 
-router.get('/carrito', async (req, res) => {
-  let userName = req.user ? req.user.email : '';
-  try {
-    // Obtener todos los productos del carrito
-    const productos = await Producto.find();
-    res.render('carrito', { productos },{ userName: userName });
-  } catch (error) {
-    console.error('Error al obtener los productos del carrito', error);
-    res.sendStatus(500);
+})
+router.post('/carrito/agregar', (req, res) => {
+  const { nombre, descripcion, precio } = req.body;
+  
+  if (!req.session.carrito) {
+    req.session.carrito = [];
+    req.session.total = 0; // Inicializa el total en 0 si el carrito no existe
   }
+  
+  const precioNum = parseFloat(precio); // Convierte el precio a un número
+  
+  req.session.carrito.push({ nombre, descripcion, precio: precioNum }); // Guarda el precio como un número en el carrito
+  
+  req.session.total += precioNum; // Actualiza la suma total
+  
+  res.redirect('/carrito');
 });
-router.post('/carrito/agregar', async (req, res) => {
-  try {
-    // Crear un nuevo producto con los datos recibidos
-    const nuevoProducto = new Producto({
-      nombre: req.body.nombre,
-      descripcion: req.body.descripcion,
-      precio: req.body.precio
-    });
-
-    // Guardar el nuevo producto en la base de datos
-    await nuevoProducto.save();
-    res.redirect('/carrito');
-  } catch (error) {
-    console.error('Error al agregar el producto al carrito', error);
-    res.sendStatus(500);
-  }
+router.get('/carrito', (req, res) => {
+  const carrito = req.session.carrito || [];
+  const total = req.session.total || 0; // Obtiene el total de la sesión o establece 0 si no existe
+  
+  res.render('products/carrito', { carrito, total }); // Pasa el total a la vista
 });
 
 

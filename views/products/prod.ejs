@@ -1,0 +1,22 @@
+<%- include("../partials/head.ejs")%>
+<%- include("../partials/navBar.ejs")%>
+
+<% productos.forEach((producto)=> { %>
+<div>
+    <h1><%= producto.nombre %></h1>
+    <p><%= producto.descripcion %></p>
+    <p>Precio: <%= producto.precio %></p>
+</div>
+
+
+
+<form action="/carrito/agregar" method="POST">
+  <input type="hidden" name="nombre" value="<%= producto.nombre %>">
+  <input type="hidden" name="descripcion" value="<%= producto.descripcion %>">
+  <input type="hidden" name="precio" value="<%= producto.precio %>">
+  <button type="submit">Agregar al Carrito</button>
+</form>
+
+<% }); %>
+
+<%- include('../partials/footer') -%>

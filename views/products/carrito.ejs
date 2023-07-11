@@ -1,26 +1,16 @@
 <%- include("../partials/head.ejs")%>
-    <%- include("../partials/header.ejs")%>
+<%- include("../partials/navBar.ejs")%>
 
-    <h1>Tu Carrito de Compras</h1>
+<h1>Carrito de Compras</h1>
 
-    <ul>
-      <% productos.forEach(producto => { %>
-        <li>
-          <h2><%= producto.nombre %></h2>
-          <p><%= producto.descripcion %></p>
-          <p>Precio: $<%= producto.precio %></p>
-        </li>
-      <% }) %>
-    </ul>
-  
-    <form action="/carrito/agregar" method="POST">
-      <h2>Agregar Producto</h2>
-      <input type="text" name="nombre" placeholder="Nombre" required>
-      <input type="text" name="descripcion" placeholder="Descripción" required>
-      <input type="number" name="precio" placeholder="Precio" required>
-      <button type="submit">Agregar al Carrito</button>
-    </form>
+<% carrito.forEach((producto) => { %>
+  <div>
+    <h2><%= producto.nombre %></h2>
+    <p><%= producto.descripcion %></p>
+    <p>Precio: <%= producto.precio %></p>
+  </div>
+<% }); %>
 
+<p>Total: <%= total %></p> <!-- Muestra la suma total -->
 
-
-        <%- include("../partials/footer.ejs") %>
+<%- include('../partials/footer') -%>
