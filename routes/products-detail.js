@@ -4,6 +4,10 @@ import passport from 'passport'
 import mongoose from 'mongoose'
 import Producto from '../models/products.js'
 
+// ruta compra realizada
+router.get('/compraRealizada', (req, res) => { 
+  res.render('pages/compraRealizada')
+})
 
 // Crear una función para cargar los productos en la base de datos
  async function cargarProductos() {
@@ -144,7 +148,7 @@ router.post('/carrito/eliminar/:index', (req, res) => {
   res.redirect('/carrito');
 });
 
-router.get('pages/compraRealizada', async (req, res) => {
+router.get('/compraRealizada', async (req, res) => {
   const carrito = req.session.carrito || [];
 
   try {

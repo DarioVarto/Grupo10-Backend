@@ -1,0 +1,84 @@
+/*ESTILOS CARRITO**/
+
+.carro-container{
+    background-color: #eeb76f;
+    margin-top: 10px;
+    padding: 5px;
+    width: 50%;
+}
+
+.botones-carro{
+    display: flex;
+   
+   
+}
+.btn-comprar{
+    display: flex;
+    justify-content: center;
+  
+}
+.btn-comprar .botoncomp{
+    width: 200px;
+}
+.btn-agregar{
+    display: flex;
+    justify-content: end;
+}
+
+
+/* Estilo banner compra*/
+
+.typewriter{
+    color: #161aee;
+    font-size: 4em;
+    text-align: center;
+    font-weight: 600;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em; /* Adjust as needed */
+    animation: 
+      typing 3.5s steps(30, end),
+      blink-caret .5s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange }
+  }
+
+/* .typewriter{
+    position: relative;
+    font-size: 4em;
+    color: red;
+    text-align: center;
+}
+.typewriter::after{
+    content: 'MARVEL';
+    position: absolute;
+    right: 0;
+    color: white;
+    background-color: #1d1f20;
+    width: 100%;
+    animation: typing 3s steps(14) alternate infinite,
+    step-end
+                line 1s infinite;
+}
+@keyframes typing{
+    to{
+        width: 0%;
+    }
+}
+@keyframes line {
+    50%{
+        color: transparent;
+    }
+} */
