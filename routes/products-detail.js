@@ -46,7 +46,7 @@ import Producto from '../models/products.js'
 } 
 
 // Llamar a la función para cargar los productos
-/*  cargarProductos();  */
+cargarProductos(); 
 
 router.get('/details', (req, res) => {
   let userName = req.user ? req.user.email : '';
