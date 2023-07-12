@@ -2,16 +2,28 @@
 <%- include("../partials/navBar.ejs")%>
 
 <h1>Carrito de Compras</h1>
-
-<% carrito.forEach((producto) => { %>
+<a href="/prod">Productos</a>
+<% carrito.forEach((producto, index) => { %>
+  <div class="d-flex">
   <div>
     <h2><%= producto.nombre %></h2>
     <p><%= producto.descripcion %></p>
     <p>Precio: <%= producto.precio %></p>
     <p>Unidades disponibles: <%= producto.stock %></p>
+    <p>Cantidad: <%= producto.cantidad || 1 %></p> <!-- Mostrar el número 1 como valor predeterminado -->
+    <form action="/carrito/eliminar/<%= index %>" method="POST">
+      <button type="submit">Eliminar</button>
+    </form>
+    <form action="/carrito/sumar/<%= index %>" method="POST">
+      <button type="submit" <%= producto.stock === 0 ? 'disabled' : '' %>>+</button> <!-- Botón para sumar cantidad -->
+    </form>
+    <form action="/carrito/restar/<%= index %>" method="POST">
+      <button type="submit" <%= producto.cantidad === 1 ? 'disabled' : '' %>>-</button> <!-- Botón para restar cantidad -->
+    </form>
   </div>
+</div>
 <% }); %>
 
 <p>Total: <%= total %></p> <!-- Muestra la suma total -->
+<a href="compraRealizada"><button>Comprar</button></a>
 
-<%- include('../partials/footer') -%>
