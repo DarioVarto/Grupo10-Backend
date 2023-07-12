@@ -67,7 +67,7 @@ router.post('/carrito/agregar', (req, res) => {
     nombre,
     descripcion,
     precio: precioNum,
-    stock: stockNum,
+    stock: stockNum - 1,
     cantidad: 1
   };
   
@@ -151,22 +151,15 @@ router.get('/compraRealizada', async (req, res) => {
     // Vaciar el carrito y redirigir a la página principal o a otra página de éxito
     req.session.carrito = [];
     req.session.total = 0;
-    res.redirect('/');
+    
   } catch (error) {
     console.error('Error al actualizar el stock en la base de datos:', error);
     res.redirect('/carrito'); // Redirigir a la página del carrito en caso de error
   }
+  res.redirect('/compraRealizada');
 });
 
-// Disminuye el stock en la base de datos
- /*  try {
-    await Producto.findOneAndUpdate(
-      { nombre: nombre },
-      { $inc: { stock: -1 } } // Resta 1 al stock
-    );
-  } catch (error) {
-    console.log('Error al disminuir el stock en la base de datos:', error);
-  } */
+
 export default router
 
 
