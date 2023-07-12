@@ -11,6 +11,18 @@ import Producto from '../models/products.js'
     // Crear un arreglo de productos
     const productos = [
       {
+        nombre: 'Producto 1',
+        descripcion: 'Descripción del producto 3',
+        stock:20,
+        precio: 100
+      },
+      {
+        nombre: 'Producto 2',
+        descripcion: 'Descripción del producto 3',
+        stock:20,
+        precio: 150
+      },
+      {
         nombre: 'Producto 3',
         descripcion: 'Descripción del producto 3',
         stock:20,
