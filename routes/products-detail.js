@@ -144,7 +144,7 @@ router.post('/carrito/eliminar/:index', (req, res) => {
   res.redirect('/carrito');
 });
 
-router.get('/compraRealizada', async (req, res) => {
+router.get('pages/compraRealizada', async (req, res) => {
   const carrito = req.session.carrito || [];
 
   try {
