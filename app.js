@@ -32,8 +32,9 @@ import LocalStrategy from 'passport-local'
 
 import morgan from 'morgan' 
 //Muestra resultado de las peticiones en la consola
-
-import userRoutes from './routes/users.js'
+import { router } from './routes/users.js'
+const userRoutes = router
+/* import userRoutes from './routes/users.js' */
 import productRoutes from './routes/products-detail.js'
 
 import User from './models/usermodels.js'

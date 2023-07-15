@@ -4,10 +4,10 @@ import passport from "passport"
 import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
-
 import LocalStrategy from 'passport-local';
 
 import User from '../models/usermodels.js'
+
 
 
 passport.use(new LocalStrategy({
@@ -15,32 +15,17 @@ passport.use(new LocalStrategy({
   passwordField: 'password',
 },
   function(email, password, done) {
+    userName = email;
     User.findOne({ email: email }, function (err, usuario) {
       if (err) { return done(err); }
       if (!usuario) { return done(null, false); }
       if (!usuario.verifyPassword(password)) { return done(null, false); }
       return done(null, usuario);
     });
-  }
+  return userName}
 ));
-/* router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, usuario, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!usuario) {
-      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-      return res.redirect('/login');
-    }
-    if (usuario.esAdmin) {
-      return res.redirect('/alluser');
-    } else {
-      let userName = usuario.email;
-      
-      res.render('pages/index', { userName: userName });
-    }
-  })(req, res, next);
-}); */
+
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, usuario, info) => {
     if (err) {
@@ -130,7 +115,7 @@ router.get('/registrar', (req, res) => {
   res.render('./users/registrar');
 });
 
-router.get('/alluser', (req, res) => {
+router.get('/alluser', ensureAuthenticated, (req, res) => {
   User.find({})  //Busca y me trae todos los usuarios
     .then(usuarios => {
       res.render('./users/alluser', { usuarios: usuarios }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
@@ -141,7 +126,7 @@ router.get('/alluser', (req, res) => {
 
 })
 
-router.get('/edituser/:id', (req, res) => {
+router.get('/edituser/:id', ensureAuthenticated, (req, res) => {
   let buscarId = { _id: req.params.id }
   User.findOne(buscarId)
 
@@ -205,31 +190,24 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-  router.post('/login', 
-(req, res, next)=>{
-  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!usuario) {
+router.post('/login', 
+passport.authenticate('local', (err, usuario, info) => {
+  if (err) {
+    return next(err);
+  }
+  if (!usuario) {
+    req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+    return res.redirect('/login');
+  }
+  if (usuario.esAdmin) {
+    return res.redirect('/alluser');
+  } else {
+    return res.redirect('/');
+  }
+return usuario}
+)
 
-      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-      return res.redirect('/login');
-      
-    }
-    if(usuario.esAdmin){
-      
-      return res.redirect('/alluser');
-    }else{
-      return res.redirect('/')
-    };
-
-  })(req, res, next)
-   
-  
-  )
-}
-); 
+);
 
 router.post('/changepassword', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
@@ -355,6 +333,7 @@ router.delete('/delete/usuario/:id', (req, res) => {
 });
 
 
-export default router
-
+/* export default router */
+export { router, ensureAuthenticated };
+/* export const userName = usuario.email */
 
