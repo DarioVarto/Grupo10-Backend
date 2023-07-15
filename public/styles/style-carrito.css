@@ -1,59 +1,84 @@
 /*ESTILOS CARRITO**/
 
-.carro-container{
-    background-color: #eeb76f;
+.carro-container {
+    background-color: #bdad98;
     margin-top: 10px;
     padding: 5px;
     width: 50%;
+    border-radius: 5%;
+    border-style: solid;
+    border-color: rgb(95, 93, 93);
 }
 
-.botones-carro{
+.botones-carro {
     display: flex;
-   
-   
+
+
 }
-.btn-comprar{
+
+.btn-comprar {
     display: flex;
     justify-content: center;
-  
+
 }
-.btn-comprar .botoncomp{
+
+.btn-comprar .botoncomp {
     width: 200px;
 }
-.btn-agregar{
+
+.btn-agregar {
     display: flex;
     justify-content: end;
 }
 
-
+.total{
+    font-size: 1.5rem;
+}
 /* Estilo banner compra*/
 
-.typewriter{
+.typewriter {
     color: #161aee;
     font-size: 4em;
     text-align: center;
     font-weight: 600;
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid orange; /* The typwriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .15em; /* Adjust as needed */
-    animation: 
-      typing 3.5s steps(30, end),
-      blink-caret .5s step-end infinite;
-  }
-  
-  /* The typing effect */
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
-  
-  /* The typewriter cursor effect */
-  @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: orange }
-  }
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange;
+    /* The typwriter cursor */
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    margin: 0 auto;
+    /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em;
+    /* Adjust as needed */
+    animation:
+        typing 3.5s steps(30, end),
+        blink-caret .5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: orange
+    }
+}
 
 /* .typewriter{
     position: relative;

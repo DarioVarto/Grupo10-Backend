@@ -9,6 +9,9 @@ router.get('/compraRealizada', ensureAuthenticated, (req, res) => {
   res.render('pages/compraRealizada')
 })
 
+
+
+
 // Crear una función para cargar los productos en la base de datos
  async function cargarProductos() {
   try {
@@ -80,7 +83,7 @@ router.get('/prod', ensureAuthenticated, (req, res) => {
 });
 
 
-router.post('/carrito/agregar', ensureAuthenticated, (req, res) => {
+router.post('/carrito/agregar',ensureAuthenticated, (req, res) => {
   const { nombre, descripcion, precio, stock } = req.body;
   
   if (!req.session.carrito) {
