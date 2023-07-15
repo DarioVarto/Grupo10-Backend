@@ -1,4 +1,5 @@
 <%- include("../partials/head.ejs")%>
+
   <%- include("../partials/navBar.ejs")%>
 
     <div class="container-fluid carro-container">
@@ -8,18 +9,19 @@
       <% carrito.forEach((producto, index)=> { %>
         <div class="d-flex mt-3 ">
           <div>
-            <h2>
+            <h2 class="fw-bold">
               <%= producto.nombre %>
             </h2>
             <p>
               <%= producto.descripcion %>
             </p>
-            <p>Precio: <%= producto.precio %>
+            <p class="fw-bold text-primary">Precio: <%= producto.precio %>
             </p>
             <p>Unidades disponibles: <%= producto.stock %>
             </p>
             <p>Cantidad: <%= producto.cantidad || 1 %>
             </p> <!-- Mostrar el número 1 como valor predeterminado -->
+          
 
             <div class="botones-carro">
 
@@ -41,10 +43,10 @@
         </div>
         <% }); %>
 
-          <p class="text-dark fw-bold mt-2">Total: $ <%= total %>
+          <p class="text-center fw-bold mt-2 total">Total: $ <%= total %>
           </p> <!-- Muestra la suma total -->
           <div class="btn-comprar">
             <a href="/compraRealizada"><button class="btn btn-primary m-2 botoncomp">Comprar</button></a>
           </div>
-          
+
     </div>

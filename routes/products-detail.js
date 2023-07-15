@@ -9,6 +9,9 @@ router.get('/compraRealizada', (req, res) => {
   res.render('pages/compraRealizada')
 })
 
+
+
+
 // Crear una función para cargar los productos en la base de datos
  async function cargarProductos() {
   try {
@@ -68,7 +71,21 @@ router.get('/prod', (req, res) => {
 
 })
 
+// //RUTA ALLPRODUCTS
+// router.get('/allproducts', (req, res) => {
+//   Producto.find({})
+//     .then(producto => {
+//       res.render('./products/allproducts', { producto: producto })
+//     })
+//     .catch(error => {
+//       res.render('/products/allproducts')
+//     })
+// })
 
+
+
+
+//Peticones POST
 router.post('/carrito/agregar', (req, res) => {
   const { nombre, descripcion, precio, stock } = req.body;
   
