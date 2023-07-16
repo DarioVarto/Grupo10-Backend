@@ -1,24 +1,35 @@
 <%- include("../partials/head.ejs")%>
-<%- include("../partials/navBar.ejs")%>
+<%- include("../partials/header.ejs", { userName: userName }) %>
+  <%- include("../partials/navBar.ejs")%>
 
-<% productos.forEach((producto)=> { %>
-<div>
-    <h1><%= producto.nombre %></h1>
-    <p><%= producto.descripcion %></p>
-    <p>Precio: <%= producto.precio %></p>
-    <p>Unidades disponibles: <%= producto.stock %></p>
-</div>
+    <% productos.forEach((producto)=> { %>
+      <div class="container-fluid carro-container">
 
 
+        <div>
+          <h1 class="text-center">
+            <%= producto.nombre %>
+          </h1>
+          <p class="text-dark mt-1">
+            <%= producto.descripcion %>
+          </p>
+          <p class="text-primary fw-bold mt-5">Precio: <%= producto.precio %>
+          </p>
+          <p class="text-dark mt-5">Unidades disponibles: <%= producto.stock %>
+          </p>
+        </div>
 
-<form action="/carrito/agregar" method="POST">
-  <input type="hidden" name="nombre" value="<%= producto.nombre %>">
-  <input type="hidden" name="descripcion" value="<%= producto.descripcion %>">
-  <input type="hidden" name="precio" value="<%= producto.precio %>">
-  <input type="hidden" name="stock" value="<%= producto.stock %>">
-  <button type="submit">Agregar al Carrito</button>
-</form>
+        <div class="btn-comprar">
 
-<% }); %>
+          <form action="/carrito/agregar" method="POST">
+            <input type="hidden" name="nombre" value="<%= producto.nombre %>">
+            <input type="hidden" name="descripcion" value="<%= producto.descripcion %>">
+            <input type="hidden" name="precio" value="<%= producto.precio %>">
+            <input type="hidden" name="stock" value="<%= producto.stock %>">
+            <button class="btn btn-success m-2 text-center btn-agregar" type="submit">Agregar al Carrito</button>
+          </form>
+        </div>
+      </div>
+      <% }); %>
 
-<%- include('../partials/footer') -%>
+        <%- include('../partials/footer') -%>

@@ -3,6 +3,11 @@ const router=express.Router()
 import passport from 'passport'
 import mongoose from 'mongoose'
 import Producto from '../models/products.js'
+import {ensureAuthenticated } from './users.js'
+// ruta compra realizada
+
+
+
 
 
 // Crear una función para cargar los productos en la base de datos
@@ -46,27 +51,37 @@ import Producto from '../models/products.js'
 } 
 
 // Llamar a la función para cargar los productos
-/*  cargarProductos();  */
+/* cargarProductos();  */
 
-router.get('/details', (req, res) => {
-  let userName = req.user ? req.user.email : '';
+router.get('/details', ensureAuthenticated, (req, res) => {
+  const userName = req.user.email;
   res.render('products/details', { userName: userName });
 }); 
 
-router.get('/prod', (req, res) => {
-  let userName = req.usuario.email;
+/* router.get('/prod', ensureAuthenticated, (req, res) => {
+  const userNameValue = req.user.email;
   Producto.find({})  //Busca y me trae todos los usuarios
     .then(productos => {
-      res.render('./products/prod', { productos: productos }, { userName: userName }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
+      res.render('./products/prod', { productos: productos }, { userName: userNameValue }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
     })
     .catch(error => {
       res.render('products/prod', { userName: userName }) //Renderizo la página de todos los usuarios
     })
 
-})
+}) */
+router.get('/prod', ensureAuthenticated, (req, res) => {
+  const userName = req.user.email;
+  Producto.find({})
+    .then((productos) => {
+      res.render('./products/prod', { productos, userName });
+    })
+    .catch((error) => {
+      res.render('products/prod', { userName });
+    });
+});
 
 
-router.post('/carrito/agregar', (req, res) => {
+router.post('/carrito/agregar',ensureAuthenticated, (req, res) => {
   const { nombre, descripcion, precio, stock } = req.body;
   
   if (!req.session.carrito) {
@@ -127,11 +142,12 @@ router.post('/carrito/restar/:index', (req, res) => {
   res.redirect('/carrito');
 });
 
-router.get('/carrito', (req, res) => {
+router.get('/carrito', ensureAuthenticated, (req, res) => {
+  const userName = req.user.email;
   const carrito = req.session.carrito || [];
   const total = req.session.total || 0; // Obtiene el total de la sesión o establece 0 si no existe
   
-  res.render('products/carrito', { carrito, total }); // Pasa el total a la vista
+  res.render('products/carrito', { carrito, total, userName }); // Pasa el total a la vista
 });
 router.post('/carrito/eliminar/:index', (req, res) => {
   const index = req.params.index;
@@ -145,33 +161,36 @@ router.post('/carrito/eliminar/:index', (req, res) => {
   res.redirect('/carrito');
 });
 
+
 router.get('/compraRealizada', async (req, res) => {
+  const userName = req.user.email;
   const carrito = req.session.carrito || [];
 
   try {
-    const productosCollection = mongoose.connection.collection('productos');
-
     // Actualizar el stock de cada producto en la colección
     for (const producto of carrito) {
       const { nombre, cantidad } = producto;
 
-      await productosCollection.updateOne(
-        { nombre: nombre },
-        { $inc: { stock: -cantidad } } // Restar la cantidad del producto al stock
-      );
+      // Buscar el producto en la base de datos por su nombre
+      const productoDB = await Producto.findOne({ nombre });
+
+      // Restar la cantidad del producto al stock
+      productoDB.stock -= cantidad;
+
+      // Guardar el producto actualizado en la base de datos
+      await productoDB.save();
     }
 
-    // Vaciar el carrito y redirigir a la página principal o a otra página de éxito
+    // Vaciar el carrito y renderizar la vista de compra realizada
     req.session.carrito = [];
     req.session.total = 0;
-    
+    req.flash('success_msg', 'Compra realizada');
+    res.render('pages/compraRealizada', { userName:userName });
   } catch (error) {
     console.error('Error al actualizar el stock en la base de datos:', error);
     res.redirect('/carrito'); // Redirigir a la página del carrito en caso de error
   }
-  res.redirect('/compraRealizada');
 });
-
 
 export default router
 
