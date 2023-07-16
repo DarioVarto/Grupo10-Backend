@@ -51,7 +51,7 @@ import Producto from '../models/products.js'
 router.get('/details', (req, res) => {
   let userName = req.user ? req.user.email : '';
   res.render('products/details', { userName: userName });
-});
+}); 
 
 router.get('/prod', (req, res) => {
   let userName = req.usuario.email;
