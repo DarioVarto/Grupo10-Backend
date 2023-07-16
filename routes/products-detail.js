@@ -54,12 +54,13 @@ router.get('/details', (req, res) => {
 });
 
 router.get('/prod', (req, res) => {
+  let userName = req.usuario.email;
   Producto.find({})  //Busca y me trae todos los usuarios
     .then(productos => {
-      res.render('./products/prod', { productos: productos }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
+      res.render('./products/prod', { productos: productos }, { userName: userName }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
     })
     .catch(error => {
-      res.render('products/prod') //Renderizo la página de todos los usuarios
+      res.render('products/prod', { userName: userName }) //Renderizo la página de todos los usuarios
     })
 
 })

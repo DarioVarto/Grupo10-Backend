@@ -23,24 +23,7 @@ passport.use(new LocalStrategy({
     });
   }
 ));
-/* router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, usuario, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!usuario) {
-      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-      return res.redirect('/login');
-    }
-    if (usuario.esAdmin) {
-      return res.redirect('/alluser');
-    } else {
-      let userName = usuario.email;
-      
-      res.render('pages/index', { userName: userName });
-    }
-  })(req, res, next);
-}); */
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, usuario, info) => {
     if (err) {
