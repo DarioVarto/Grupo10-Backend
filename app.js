@@ -36,8 +36,12 @@ import morgan from 'morgan'
 
 import userRoutes from './routes/users.js'
 import productRoutes from './routes/products-detail.js'
+import universoRoutes from './routes/universo-marvel2.js'
+import productosRouter from './routes/products.routes.js'
+
 
 import User from './models/usermodels.js'
+
 
 dotenv.config({path : './config.env'});
 
@@ -46,7 +50,8 @@ mongoose.connect(process.env.MONGO_GRUPO10, {
 })
 .then(con => {
     console.log('La base de datos está conectada');
-});
+})
+.catch(error=>console.log('error'));
 
 app.use(session({
     secret : 'El usuario esta conectado',
@@ -72,7 +77,7 @@ app.use((req, res, next)=> {
     res.locals.success_msg = req.flash(('success_msg'));
     res.locals.error_msg = req.flash(('error_msg'));
     res.locals.error = req.flash(('error'));
-    res.locals.currentUser = req.user;
+    res.locals.currentUser = req.usuario;
     next();
 });
 
@@ -84,6 +89,13 @@ app.use(express.static('public')); //Conexión a carpeta public
 
 app.use(userRoutes);
 app.use(productRoutes);
+app.use(universoRoutes);
+app.use(productosRouter)
+
+app.get('/productos', (req,res) => {
+    res.send("Hola desde productos")
+})
+
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:true}))
@@ -95,14 +107,11 @@ app.use(flash())
 
 dotenv.config({path:'./config.env'})
 
-mongoose.connect(process.env.MONGO_GRUPO10) 
-.then(()=>console.log('la base de datos esta conectada'))
-.catch(error=>console.log('error'))
+
 
 
     
 
 app.listen(process.env.PORT,()=>{
     console.log('el servidor se está ejecutando')
-    console.log(process.env.PORT)
 })

@@ -5,6 +5,7 @@ import passportLocalMongoose from 'passport-local-mongoose' //Permite que queda 
 let userScheme=new mongoose.Schema({
     nombre: String,
     email:String,
+    esAdmin:Boolean,
     password:{
         type:String,
         select:false

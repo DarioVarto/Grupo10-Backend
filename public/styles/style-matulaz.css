@@ -13,6 +13,7 @@ body{
     font-size: 100px;
     margin:0px;
     letter-spacing: -4px;
+    color: black;
 }
 
 /*TOP SALES SECTION */
@@ -80,6 +81,7 @@ body{
     font-family: 'Inter', sans-serif;
     font-size: 48px;
     font-weight: 700;
+    color: black;
 }
 
 .btn-two{
@@ -90,9 +92,14 @@ body{
     font-weight: 500;
 }
 
+h1{
+    font-weight: 800;
+    font-size: 54px;
+}
+
 h4{
     font-weight: 800;
-    font-size: 24px;
+    font-size: 16px;
 }
 
 .custom-text>p{
@@ -124,6 +131,10 @@ h4{
 }
 .section-details-info{
     padding:50px
+}
+
+.detalle{
+    font-size: 10px;
 }
 
 

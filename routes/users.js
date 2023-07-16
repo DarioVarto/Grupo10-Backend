@@ -4,44 +4,126 @@ import passport from "passport"
 import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
-import mongoose from 'mongoose'
+
+import LocalStrategy from 'passport-local';
 
 import User from '../models/usermodels.js'
 
+
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+},
+  function(email, password, done) {
+    User.findOne({ email: email }, function (err, usuario) {
+      if (err) { return done(err); }
+      if (!usuario) { return done(null, false); }
+      if (!usuario.verifyPassword(password)) { return done(null, false); }
+      return done(null, usuario);
+    });
+  }
+));
+/* router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+    }
+    if (usuario.esAdmin) {
+      return res.redirect('/alluser');
+    } else {
+      let userName = usuario.email;
+      
+      res.render('pages/index', { userName: userName });
+    }
+  })(req, res, next);
+}); */
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+    }
+    if (usuario.esAdmin) {
+      req.flash('success_msg', '🟢🟢🟢BIENVENIDO', (usuario.nombre).toUpperCase(), 'USTED ES EL ADMINISTRADOR✅✅✅')
+      return res.redirect('/alluser');
+    } else {
+      let userName = usuario.email;
+      req.login(usuario, (err) => {
+        if (err) {
+          return next(err);
+        }
+        
+        return res.render('pages/index', { userName: userName });
+      });
+    }
+  })(req, res, next);
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    req.usuario = req.user;
+    
+    return next();
+  }
+  req.flash('success_msg', ' 💻💻💻 Para Navegar en la Web debe Loguearse por favor! 🆗🆗🆗')
+  res.redirect('/login');
+}
+
 //Peticiones get
 
-router.get('/', (req, res) => {
-  res.render('pages/index')
+router.get('/',(req, res) => {
+ const userName = req.query.userName;
+  res.render('pages/index', { userName: userName });
 })
 
-router.get('/contacto', (req, res) => { //link contacto footer
-  res.render('pages/contacto')
+router.get('/contacto', ensureAuthenticated,(req, res) => { //link contacto footer
+  let userName = req.usuario.email;
+  if (userName){
+    res.render('pages/contacto', { userName: userName })
+  }
+  else{
+    res.render('pages/contacto')
+  }
 })
 
-router.get('/nosotros', (req, res) => { //link nosotros footer
-  res.render('pages/nosotros')
+router.get('/nosotros', ensureAuthenticated, (req, res) => {
+  let userName = req.usuario.email;
+  res.render('pages/nosotros', { userName: userName });
+});
+
+router.get('/historia', ensureAuthenticated, (req, res) => { //link historia footer
+  let userName = req.usuario.email;
+  res.render('pages/historia', { userName: userName })
 })
 
-router.get('/historia', (req, res) => { //link historia footer
-  res.render('pages/historia')
+router.get('/soporte', ensureAuthenticated, (req, res) => { //link soporte footer
+  let userName = req.usuario.email;
+  res.render('pages/soporte', { userName: userName })
 })
 
-router.get('/soporte', (req, res) => { //link soporte footer
-  res.render('pages/soporte')
+router.get('/informacion', ensureAuthenticated, (req, res) => { //link informacion footer
+  let userName = req.usuario.email;
+  res.render('pages/informacion', { userName: userName })
+})
+router.get('/privacidad', ensureAuthenticated, (req, res) => { //link privacidad footer
+  let userName = req.usuario.email;
+  res.render('pages/privacidad', { userName: userName })
+})
+router.get('/terminos', ensureAuthenticated, (req, res) => { //link terminos footer
+  let userName = req.usuario.email;
+  res.render('pages/terminos', { userName: userName })
 })
 
-router.get('/informacion', (req, res) => { //link informacion footer
-  res.render('pages/informacion')
-})
-router.get('/privacidad', (req, res) => { //link privacidad footer
-  res.render('pages/privacidad')
-})
-router.get('/terminos', (req, res) => { //link terminos footer
-  res.render('pages/terminos')
-})
-
-router.get('/edit', (req, res) => {
-  res.render('users/edit')
+router.get('/edit', ensureAuthenticated, (req, res) => {
+  let userName = req.usuario.email;
+  res.render('users/edit', { userName: userName })
 })
 
 router.get('/registrar', (req, res) => {
@@ -75,7 +157,8 @@ router.get('/edituser/:id', (req, res) => {
 
 router.get('/login', (req, res) => {
   res.render('users/login')
-})
+});
+
 
 router.get('/olvido', (req, res) => {
   res.render('users/olvido')
@@ -92,7 +175,7 @@ router.get(('/logout', (req, res) => {  //No es necesario crear un archivo logou
   //Mensaje para el usuario que se deslogueo
   req.logOut(); //Método propio de nodejs para cerrar sesión
   res.flash('success_msg', 'Su sesión ha finalizado correctamente')
-  res.redirect('pages/index')
+  res.redirect('/login')
 }))
 
 //Método post
@@ -102,14 +185,16 @@ router.post('/registrar', (req, res) => {
 
   let userData = {
     nombre: nombre,
-    email: email
+    email: email,
+    esAdmin: false
   };
 
-  User.register(userData, password, (err, user) => {
+  User.register(userData, password, (err, usuario) => {
     if (err) {
       req.flash('error_msg', 'ERROR: ' + err);
       res.redirect('/registrar');
     } else {
+      req.flash('success_msg', 'Usuario' , (usuario.email).toUpperCase(),'registrado exitosamente');
       res.redirect('/login');
     }
 
@@ -120,34 +205,56 @@ router.post('/registrar', (req, res) => {
 
 //Login para usuarios registrados
 
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/registar',
-  failureFlash: 'email o contraseña incorrecta. Intente nuevamente'
-}))
+  router.post('/login', 
+(req, res, next)=>{
+  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!usuario) {
 
-router.post('/password/change', (req, res) => {
+      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
+      return res.redirect('/login');
+      
+    }
+    if(usuario.esAdmin){
+      
+      return res.redirect('/alluser');
+    }else{
+      return res.redirect('/')
+    };
+
+  })(req, res, next)
+   
+  
+  )
+}
+); 
+
+router.post('/changepassword', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
-    //mensaje no son iguales
-    res.redirect('/password/change')
+    req.flash('error_msg', 'Las contraseñas no coinciden');
+    return res.redirect('/changepassword')
   }
   User.findOne({ email: req.user.email })
-    .then(user => {
-      user.setPassword(req.body.password, error => {
-        user.save()
-          .then(user => {
-            //mensaje se cambio la contraseña
+    .then(usuario => {
+      usuario.setPassword(req.body.password, error => {
+        usuario.save()
+          .then(usuario => {
+            req.flash('success_msg', 'La contraseña se modifico exitosamente');
             res.redirect('/login')
           })
           .catch(error => {
-            //mensaje error
-            res.redirect('/password/change')
+            req.flash('error_msg', 'Error:'+error)
+            res.redirect('/changepassword')
           })
       })
     })
 
 })
 
+
+//olvido password
 router.post('/olvido', (req, res) => {
 
   async.waterfall([         //Genera un array de objetos, donde cada objeto es una función
@@ -181,7 +288,7 @@ router.post('/olvido', (req, res) => {
         service: 'Gmail',
         auth: {
           usuario: 'grupo10@gmail.com',
-          pass: 'Grupo@10'
+          pass: 'kjiceexxxtfguhzj'
         }
       })
       let mailOptions = { //Redacto el mail
@@ -198,13 +305,28 @@ router.post('/olvido', (req, res) => {
   ])
 })
 
+/* router.post('/logout', (req, res) => {
+  req.logOut();
+  req.flash('success_msg', 'Su sesión ha finalizado correctamente');
+  res.redirect('/pages/index');
+}); */
+router.post('/logout', (req, res) => {
+  req.logout(function(err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash('success_msg', 'Su sesión ha finalizado correctamente');
+    res.redirect('/login');
+  });
+});
+
 //PUT routes starts here
 router.put('/edituser/:id', (req, res) => {
   let buscarId = { _id: req.params.id };
 
   User.updateOne(buscarId, {
     $set: {
-      nombre: req.body.name,
+      nombre: req.body.nombre,
       email: req.body.email
     }
   })
