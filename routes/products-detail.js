@@ -121,7 +121,7 @@ router.post('/carrito/sumar/:index', (req, res) => {
     }
   }
   
-  res.json({ message: 'OK' });
+  res.redirect('/carrito');
 });
 
 router.post('/carrito/restar/:index', (req, res) => {
@@ -139,7 +139,7 @@ router.post('/carrito/restar/:index', (req, res) => {
     }
   }
   
-  res.json({ message: 'OK' })
+  res.redirect('/carrito');
 });
 
 router.get('/carrito', ensureAuthenticated, (req, res) => {
