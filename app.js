@@ -39,6 +39,7 @@ import productRoutes from './routes/products-detail.js'
 
 import User from './models/usermodels.js'
 
+
 dotenv.config({path : './config.env'});
 
 mongoose.connect(process.env.MONGO_GRUPO10, {

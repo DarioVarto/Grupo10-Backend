@@ -220,7 +220,7 @@ passport.authenticate('local', (err, usuario, info) => {
 );
 function generarToken(usuarioId) {
   // Clave secreta para firmar el token (puedes cambiarla por una más segura)
-  const claveSecreta = 'mi_clave_secreta';
+  const claveSecreta = 'secretKey';
 
   // Datos que se incluirán en el token (pueden ser cualquier información relevante del usuario)
   const datosUsuario = {
@@ -233,13 +233,46 @@ function generarToken(usuarioId) {
 
   return token;
 }
+router.get('/changepassword', ensureAuthenticated, (req, res) => {
+  res.render('users/changepassword');
+});
+router.post('/changepassword', ensureAuthenticated, (req, res) => {
+  if (req.body.password !== req.body.confirmpassword) {
+    req.flash('error_msg', "Passwords don't match. Type again!");
+    return res.redirect('/password/change');
+  }
+
+  User.findOne({ email: req.user.email })
+    .then(usuario => {
+      usuario.setPassword(req.body.password, error => {
+        if (error) {
+          req.flash('error_msg', 'Error al modificar la contraseña: ' + error);
+          return res.redirect('/changepassword');
+        }
+
+        usuario.save()
+          .then(usuario => {
+            req.flash('success_msg', 'La contraseña se modificó exitosamente');
+            res.redirect('/login');
+          })
+          .catch(error => {
+            req.flash('error_msg', 'Error al guardar la contraseña: ' + error);
+            res.redirect('/changepassword');
+          });
+      });
+    })
+    .catch(error => {
+      req.flash('error_msg', 'Error al buscar el usuario: ' + error);
+      res.redirect('/changepassword');
+    });
+});
 
 
 router.get('/changepassword/:token', (req, res) => {
   const token = req.params.token;
 
-  // Verificar el token
-  jwt.verify(token, 'secreto', (err, decoded) => {
+  // Verificar el token y su validez
+  jwt.verify(token, 'secretKey', (err, decoded) => {
     if (err) {
       // El token no es válido o ha expirado
       console.error('Error al verificar el token:', err);
