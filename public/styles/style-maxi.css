@@ -83,3 +83,28 @@
     margin-left: 55px;
  }
 
+/*Estilo DASHBOARD*/
+.dashboard{
+    background-color:gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.dashboard h1{
+    text-align: center;
+    font-size: 60px;
+    color: white;
+    margin-top: 10px;
+}
+
+.dashboard .col{
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+.btn-dash{
+    font-size: 1.5rem;
+    color: beige;
+}
