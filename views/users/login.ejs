@@ -1,27 +1,22 @@
 <%- include("../partials/head.ejs")%>
-<%- include("../partials/header.ejs")%>
-
-
-
-
-
+<%- include("../partials/navBar.ejs") %>
 <h1 class="text-center mt-5 mb-3 ">Ingreso</h1>
     <%- include('../partials/messages') -%> 
         <div class="container w-25">
 
             <form action="/login" method="post">
                 <div class="form-group px-0">
-                <input type="email" name="email" class="form-control" placeholder="Ingrese su email">
+                <input type="email" name="email" class="form-control m-2" placeholder="Ingrese su email">
                 </div>
                 <div class="form-group px-0">
-                <input type="password" name="password" class="form-control" placeholder="Ingrese su contraseña">
+                <input type="password" name="password" class="form-control m-2" placeholder="Ingrese su contraseña">
                 </div>
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column m-2 text-center">
                     <a href="/olvido">Olvido su contraseña?</a>
-                    <a href="/registrar">Ingrese aquí para registrarse</a>
+                    <a class="text-primary" href="/registrar">REGISTRARSE</a>
                 </div>
                 <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-danger btn-bolck ">Ingresar</button>
+                <button type="submit" class="btn btn-danger btn-bolck ">INGRESAR</button>
             </div>
             </form>
         </div>

@@ -22,7 +22,7 @@
 
 }
 
-.h1maxi {
+.h1shop {
     font-size: 55px;
     font-weight: 900;
     color: black;
@@ -36,7 +36,7 @@
 
 .img-seccion {
     width: 100%;
-    height: 450px;
+    height: 100%;
 }
 
 .box {
@@ -66,16 +66,13 @@
 }
 
 /* ESTILOS FOOTER */
-.marvel-footer{
-    padding-top: 10px;
-}
 .logo-marvel {
     width: 150px;
 }
 
 .box-footer-maxi {
     font-weight: bold;
-    padding: 15px;
+    text-align: center;
 }
 
 .p-footer {
@@ -86,16 +83,59 @@
 
 .p-footer2 p {
     margin-left: 55px;
+    text-align: center;
 }
 
-/*media queries*/
-@media (max-width: 400px) {
-    .marvel-footer {
+/*Estilo DASHBOARD*/
+.dashboard {
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.dashboard h1 {
+    text-align: center;
+    font-size: 60px;
+    color: white;
+    margin-top: 10px;
+}
+
+.dashboard .col {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-dash {
+    font-size: 1.5rem;
+    color: beige;
+}
+
+
+@media screen and (max-width: 400px) {
+    .h1shop {
+        font-size: 40px;
+        display: flex;
+        text-align: center;
+    }
+ 
+    
+    .box{
+        
         text-align: center;
     }
 
     .box-footer-maxi {
         text-align: center;
-        
+        width: 100%;
+
     }
+
+    .foot-header {
+        width: 100%;
+        
+        
+        }
 }
