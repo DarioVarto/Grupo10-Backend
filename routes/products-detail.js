@@ -193,6 +193,21 @@ router.get('/compraRealizada', async (req, res) => {
   }
 });
 
+
+//renderizado estatico de productos top-sale hasta completar el agregado de productos con funcion cargarProductos()
+router.get('/top-sale-1', (req, res) => {
+  let userName = req.user ? req.user.email : '';
+  res.render('products/top-sale-1', { userName: userName });
+});
+router.get('/top-sale-2', (req, res) => {
+  let userName = req.user ? req.user.email : '';
+  res.render('products/top-sale-2', { userName: userName });
+});
+router.get('/top-sale-3', (req, res) => {
+  let userName = req.user ? req.user.email : '';
+  res.render('products/top-sale-3', { userName: userName });
+});
+
 export default router
 
 
