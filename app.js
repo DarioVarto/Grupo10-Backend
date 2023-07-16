@@ -32,12 +32,13 @@ import LocalStrategy from 'passport-local'
 
 import morgan from 'morgan' 
 //Muestra resultado de las peticiones en la consola
-
-import {router } from './routes/users.js'
-const userRoutes=router
+import { router } from './routes/users.js'
+const userRoutes = router
+/* import userRoutes from './routes/users.js' */
 import productRoutes from './routes/products-detail.js'
 
 import User from './models/usermodels.js'
+
 
 dotenv.config({path : './config.env'});
 
@@ -61,6 +62,11 @@ app.use(passport.session()); //Guarda los datos de la sesión en un objeto denom
 
 passport.use(new LocalStrategy({usernameField : 'email'}, User.authenticate()));//Método de comparación entre el dato ingresado y el que figura en la base de datos, en este caso el email
 
+app.use((req, res, next) => {
+    res.locals.userName = req.user ? req.user.email : null;
+    next();
+  });
+  
 passport.serializeUser(User.serializeUser());
 
 passport.deserializeUser(User.deserializeUser());
