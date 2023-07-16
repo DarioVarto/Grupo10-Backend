@@ -1,25 +1,23 @@
 /*ESTILOS CARRITO**/
 
 .carro-container {
-    background-color: #bdad98;
-    margin-top: 10px;
+    background-color: rgba(189, 173, 152,0.2);
+    margin-top: 20px;
     padding: 5px;
     width: 50%;
-    border-radius: 5%;
+    border-radius: 20px;
     border-style: solid;
-    border-color: rgb(95, 93, 93);
+    border-color: transparent
 }
 
 .botones-carro {
     display: flex;
-
-
+    border: 2px solid transparent;
 }
 
 .btn-comprar {
     display: flex;
     justify-content: center;
-
 }
 
 .btn-comprar .botoncomp {
@@ -30,7 +28,10 @@
     display: flex;
     justify-content: end;
 }
-
+.btn-eliminar{
+    background-color: aliceblue;
+    opacity: 0.8;
+}
 .total{
     font-size: 1.5rem;
 }

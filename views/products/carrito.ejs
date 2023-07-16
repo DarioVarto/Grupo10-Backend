@@ -1,11 +1,13 @@
 <%- include("../partials/head.ejs")%>
-
+<%- include("../partials/header.ejs")%>
   <%- include("../partials/navBar.ejs")%>
 
     <div class="container-fluid carro-container">
       <h1 class="text-center">CARRITO DE COMPRAS</h1>
-
-      <a href="/prod" class="text-primary fw-bold">Ver Productos</a>
+      <div class="d-flex justify-content-center">
+        <a href="/prod" ><h3 class="text-danger fw-bold mt-3">Elegir más productos</h3></a>
+      </div>
+    
       <% carrito.forEach((producto, index)=> { %>
         <div class="d-flex mt-3 ">
           <div>
@@ -25,17 +27,19 @@
 
             <div class="botones-carro">
 
-              <form action="/carrito/sumar/<%= index %>" method="POST">
-                <button class="btn btn-secondary m-2" type="submit" <%=producto.stock===0 ? 'disabled' : '' %>>Agregar
-                  +</button> <!-- Botón para sumar cantidad -->
+              <form action="/carrito/eliminar/<%= index %>" method="POST">
+                <button class="btn   m-2 btn-eliminar" type="submit">Eliminar</button>
               </form>
+
               <form action="/carrito/restar/<%= index %>" method="POST">
-                <button class="btn btn-secondary m-2" type="submit" <%=producto.cantidad===1 ? 'disabled' : '' %>>Quitar
+                <button class="btn btn-secondary m-2 btn-restar" type="submit" <%=producto.cantidad===1 ? 'disabled' : '' %>>Quitar
                   -</button> <!-- Botón para restar cantidad -->
               </form>
-              <form action="/carrito/eliminar/<%= index %>" method="POST">
-                <button class="btn btn-danger  m-2" type="submit">Eliminar</button>
-              </form>
+
+              <form action="/carrito/sumar/<%= index %>" method="POST">
+                <button class="btn btn-danger m-2" type="submit" <%=producto.stock===0 ? 'disabled' : '' %>>Agregar
+                  +</button> <!-- Botón para sumar cantidad -->
+              </form>            
 
             </div>
 
