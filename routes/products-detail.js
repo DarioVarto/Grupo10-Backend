@@ -3,6 +3,7 @@ const router=express.Router()
 import passport from 'passport'
 import mongoose from 'mongoose'
 import Producto from '../models/products.js'
+import {ensureAuthenticated } from './users.js'
 
 
 // Crear una función para cargar los productos en la base de datos
@@ -36,12 +37,13 @@ import Producto from '../models/products.js'
 // Llamar a la función para cargar los productos
 /*  cargarProductos();  */
 
-router.get('/details', (req, res) => {
-  let userName = req.user ? req.user.email : '';
+router.get('/details', ensureAuthenticated, (req, res) => {
+  const userName = req.user.email;
   res.render('products/details', { userName: userName });
 });
 
-router.get('/prod', (req, res) => {
+router.get('/prod', (req, res)=> {
+  
   Producto.find({})  //Busca y me trae todos los usuarios
     .then(productos => {
       res.render('./products/prod', { productos: productos }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
@@ -114,11 +116,12 @@ router.post('/carrito/restar/:index', (req, res) => {
   res.redirect('/carrito');
 });
 
-router.get('/carrito', (req, res) => {
+router.get('/carrito', ensureAuthenticated, (req, res) => {
+  const userName = req.user.email;
   const carrito = req.session.carrito || [];
   const total = req.session.total || 0; // Obtiene el total de la sesión o establece 0 si no existe
   
-  res.render('products/carrito', { carrito, total }); // Pasa el total a la vista
+  res.render('products/carrito', { carrito, total, userName }); // Pasa el total a la vista
 });
 router.post('/carrito/eliminar/:index', (req, res) => {
   const index = req.params.index;
@@ -133,6 +136,7 @@ router.post('/carrito/eliminar/:index', (req, res) => {
 });
 
 router.get('/compraRealizada', async (req, res) => {
+  const userName = req.user.email;
   const carrito = req.session.carrito || [];
 
   try {
@@ -156,7 +160,7 @@ router.get('/compraRealizada', async (req, res) => {
     console.error('Error al actualizar el stock en la base de datos:', error);
     res.redirect('/carrito'); // Redirigir a la página del carrito en caso de error
   }
-  res.redirect('/compraRealizada');
+  res.redirect('/compraRealizada', { userName: userName });
 });
 
 

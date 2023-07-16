@@ -23,24 +23,7 @@ passport.use(new LocalStrategy({
     });
   }
 ));
-/* router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, usuario, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!usuario) {
-      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-      return res.redirect('/login');
-    }
-    if (usuario.esAdmin) {
-      return res.redirect('/alluser');
-    } else {
-      let userName = usuario.email;
-      
-      res.render('pages/index', { userName: userName });
-    }
-  })(req, res, next);
-}); */
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, usuario, info) => {
     if (err) {
@@ -51,7 +34,8 @@ router.post('/login', (req, res, next) => {
       return res.redirect('/login');
     }
     if (usuario.esAdmin) {
-      return res.redirect('/alluser');
+      req.flash('success_msg', '🟢🟢🟢BIENVENIDO', (usuario.nombre).toUpperCase(), 'USTED ES EL ADMINISTRADOR✅✅✅')
+      return res.redirect('/dashboard');
     } else {
       let userName = usuario.email;
       req.login(usuario, (err) => {
@@ -70,6 +54,7 @@ function ensureAuthenticated(req, res, next) {
     
     return next();
   }
+  req.flash('success_msg', ' Por favor, ingresar para continuar navegando')
   res.redirect('/login');
 }
 
@@ -83,7 +68,7 @@ router.get('/',(req, res) => {
 router.get('/contacto', ensureAuthenticated,(req, res) => { //link contacto footer
   let userName = req.usuario.email;
   if (userName){
-    res.render('pages/contacto', { userName: userName })
+    res.render('pages/contacto', { userName:userName })
   }
   else{
     res.render('pages/contacto')
@@ -137,6 +122,19 @@ router.get('/alluser', (req, res) => {
     })
 
 })
+//RUTA DASHBOARD
+router.get('/dashboard', (req, res) => {
+  User.find({})
+    .then(usuarios => {
+      res.render('./admin/dashboard', { usuarios: usuarios })
+    })
+    .catch(error => {
+      res.render('/admin/dashboard')
+    })
+
+
+})
+
 
 router.get('/edituser/:id', (req, res) => {
   let buscarId = { _id: req.params.id }
@@ -198,37 +196,6 @@ router.post('/registrar', (req, res) => {
   });
 
 });
-
-
-//Login para usuarios registrados
-
- /*  router.post('/login', 
-(req, res, next)=>{
-  passport.authenticate('local', passport.authenticate('local', (err, usuario, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!usuario) {
-
-      req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-      return res.redirect('/login');
-      
-    }
-    if(usuario.esAdmin){
-      return res.redirect('/alluser');
-    }else{ 
-      let userName=usuario.email
-     res.render('pages/index', { userName: userName })
-     
-    
-    };
-
-  })(req, res, next)
-   
-  
-  )
-}
-);  */
 
 router.post('/password/change', (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
@@ -351,7 +318,7 @@ router.delete('/delete/usuario/:id', (req, res) => {
     })
 });
 
-
-export default router
+export { router, ensureAuthenticated };
+/* export default router */
 
 
