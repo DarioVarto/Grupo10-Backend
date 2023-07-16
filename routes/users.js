@@ -335,6 +335,7 @@ router.delete('/delete/usuario/:id', (req, res) => {
 });
 
 
-export default router
+/* export default router */
+export { router, ensureAuthenticated };
 
 
