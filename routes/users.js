@@ -5,7 +5,7 @@ import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
 import LocalStrategy from 'passport-local';
-
+import jwt from 'jsonwebtoken'
 import User from '../models/usermodels.js'
 
 
@@ -24,6 +24,7 @@ passport.use(new LocalStrategy({
     });
   return userName}
 ));
+
 
 
 router.post('/login', (req, res, next) => {
@@ -64,12 +65,12 @@ function ensureAuthenticated(req, res, next) {
 //Peticiones get
 
 router.get('/', (req, res) => {
-  const userName = req.query.userName;
+  const userName = res.locals.userName;
   res.render('pages/index', { userName: userName });
 })
 
 router.get('/contacto', ensureAuthenticated, (req, res) => { //link contacto footer
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   if (userName) {
     res.render('pages/contacto', { userName: userName })
   }
@@ -79,35 +80,35 @@ router.get('/contacto', ensureAuthenticated, (req, res) => { //link contacto foo
 })
 
 router.get('/nosotros', ensureAuthenticated, (req, res) => {
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('pages/nosotros', { userName: userName });
 });
 
 router.get('/historia', ensureAuthenticated, (req, res) => { //link historia footer
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('pages/historia', { userName: userName })
 })
 
 router.get('/soporte', ensureAuthenticated, (req, res) => { //link soporte footer
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('pages/soporte', { userName: userName })
 })
 
 router.get('/informacion', ensureAuthenticated, (req, res) => { //link informacion footer
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('pages/informacion', { userName: userName })
 })
 router.get('/privacidad', ensureAuthenticated, (req, res) => { //link privacidad footer
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('pages/privacidad', { userName: userName })
 })
 router.get('/terminos', ensureAuthenticated, (req, res) => { //link terminos footer
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('pages/terminos', { userName: userName })
 })
 
 router.get('/edit', ensureAuthenticated, (req, res) => {
-  let userName = req.usuario.email;
+  const userName = res.locals.userName;
   res.render('users/edit', { userName: userName })
 })
 
@@ -127,6 +128,7 @@ router.get('/alluser', ensureAuthenticated, (req, res) => {
 })
 //RUTA DASHBOARD
 router.get('/dashboard', (req, res) => {
+  const userName = res.locals.userName;
   User.find({})
     .then(usuarios => {
       res.render('./admin/dashboard', { usuarios: usuarios })
@@ -161,10 +163,6 @@ router.get('/olvido', (req, res) => {
 })
 
 
-
-router.get('/changepassword', (req, res) => {
-  res.render('users/changepassword')
-})
 
 
 router.get(('/logout', (req, res) => {  //No es necesario crear un archivo logout, es una petición del cierre de sesión
@@ -216,90 +214,131 @@ passport.authenticate('local', (err, usuario, info) => {
   } else {
     return res.redirect('/');
   }
-return usuario}
+}
 )
 
 );
+function generarToken(usuarioId) {
+  // Clave secreta para firmar el token (puedes cambiarla por una más segura)
+  const claveSecreta = 'mi_clave_secreta';
 
-router.post('/changepassword', (req, res) => {
-  if (req.body.password !== req.body.confirmpassword) {
+  // Datos que se incluirán en el token (pueden ser cualquier información relevante del usuario)
+  const datosUsuario = {
+    id: usuarioId,
+    // Aquí puedes agregar más datos, como el nombre de usuario, rol, etc.
+  };
+
+  // Generar el token con los datos y la clave secreta
+  const token = jwt.sign(datosUsuario, claveSecreta, { expiresIn: '30m' });
+
+  return token;
+}
+
+
+router.get('/changepassword/:token', (req, res) => {
+  const token = req.params.token;
+
+  // Verificar el token
+  jwt.verify(token, 'secreto', (err, decoded) => {
+    if (err) {
+      // El token no es válido o ha expirado
+      console.error('Error al verificar el token:', err);
+      req.flash('error_msg', 'El enlace para cambiar la contraseña es inválido o ha expirado.');
+      return res.redirect('/olvido'); // Redirigir a la página de olvido con un mensaje de error
+    }
+
+    // El token es válido, renderizar la vista 'user/changepassword' y pasar el token como variable para usarlo en la vista.
+    res.render('user/changepassword', { token: token });
+  });
+});
+router.post('/changepassword/:token', ensureAuthenticated, (req, res) => {
+  const token = req.params.token;
+  const newPassword = req.body.newPassword; // Obtener el valor del campo newPassword del formulario
+  const confirmPassword = req.body.confirmPassword; // Obtener el valor del campo confirmPassword del formulario
+
+  if (newPassword !== confirmPassword) {
     req.flash('error_msg', 'Las contraseñas no coinciden');
-    return res.redirect('/changepassword')
+    return res.redirect('/changepassword/' + token); // Redirigimos al formulario de cambio de contraseña con el token en la URL
   }
+
   User.findOne({ email: req.user.email })
     .then(usuario => {
-      usuario.setPassword(req.body.password, error => {
+      usuario.setPassword(newPassword, error => {
+        if (error) {
+          req.flash('error_msg', 'Error al modificar la contraseña: ' + error);
+          return res.redirect('/changepassword/' + token); // Redirigimos al formulario de cambio de contraseña con el token en la URL
+        }
+
         usuario.save()
           .then(usuario => {
-            req.flash('success_msg', 'La contraseña se modifico exitosamente');
-            res.redirect('/login')
+            req.flash('success_msg', 'La contraseña se modificó exitosamente');
+            res.redirect('/login');
           })
           .catch(error => {
-            req.flash('error_msg', 'Error:' + error)
-            res.redirect('/changepassword')
-          })
-      })
+            req.flash('error_msg', 'Error al guardar la contraseña: ' + error);
+            res.redirect('/changepassword/' + token); // Redirigimos al formulario de cambio de contraseña con el token en la URL
+          });
+      });
     })
-
-})
+    .catch(error => {
+      req.flash('error_msg', 'Error al buscar el usuario: ' + error);
+      res.redirect('/changepassword/' + token); // Redirigimos al formulario de cambio de contraseña con el token en la URL
+    });
+});
 
 
 //olvido password
-router.post('/olvido', (req, res) => {
-
-  async.waterfall([         //Genera un array de objetos, donde cada objeto es una función
-    (done) => {
-      crypto.randomBytes(20, (error, buf) => {  //Con el método randomBytes genero un password random para ql usuario
-        let token = buf.toString('hex') //Se combierte buf a string en formato hexadecimal
-        done(error, token)
-      })
-    }
-    ,
-    (token, done) => {
-      User.findOne({ email: req.body.email })
-        .then(usuario => {
-          if (!usuario) {
-            //Mensaje que no existe el email
-            res.redirect('/olvido')
-          }
-          usuario.resetPasswordToken = token //Propiedad que definimos en el Schema
-          usuario.resetPasswordExpired = Date.now() + 1800000 //Tiempo en milisegundos
-          usuario.save(error => {
-            done(error, token, usuario)
-          })
-            .catch(error => {
-              //mensaje de error
-              res.redirect('/olvido')
-            })
-        })
-    },
-    (token, usuario) => {
-      let enviar = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          usuario: 'grupo10@gmail.com',
-          pass: 'kjiceexxxtfguhzj'
+router.post('/olvido', async (req, res) => {
+  try {
+    const token = await new Promise((resolve, reject) => {
+      crypto.randomBytes(20, (error, buf) => {
+        if (error) {
+          reject(error);
+        } else {
+          const token = buf.toString('hex');
+          resolve(token);
         }
-      })
-      let mailOptions = { //Redacto el mail
-        to: usuario.email,
-        from: 'grupo10@gmail.com',
-        subjet: 'Recuperar contraseña',
-        text: 'Para recuperar tu contraseña debes ingresar a : \n' + token + '\n Recuerde que debe hacerlo dentro de los próximos 30 minutos'
-      }
-      enviar.sendMaol(mailOptions, error => {
-        //Se enviaron las instrucciones
-        res.redirect('/login')
-      })
-    }
-  ])
-})
+      });
+    });
 
-/* router.post('/logout', (req, res) => {
-  req.logOut();
-  req.flash('success_msg', 'Su sesión ha finalizado correctamente');
-  res.redirect('/pages/index');
-}); */
+    const usuario = await User.findOne({ email: req.body.email });
+    if (!usuario) {
+      // El usuario no existe, redirigir a la página de olvido
+      return res.redirect('/olvido');
+    }
+
+    usuario.resetPasswordToken = token;
+    usuario.resetPasswordExpired = Date.now() + 1800000;
+    await usuario.save();
+
+    const resetLink = `http://localhost:3030/changepassword/${token}`; // Cambia "tuapp.com" por el dominio real de tu aplicación
+
+    let enviar = nodemailer.createTransport({
+      service: 'Hotmail',
+      auth: {
+        user: 'grupo10-utn@hotmail.com',
+        pass: 'Grupo10@utn'
+      }
+    });
+
+    let mailOptions = {
+      to: usuario.email,
+      from: 'grupo10-utn@hotmail.com',
+      subject: 'Recuperar contraseña',
+      text: `Para recuperar tu contraseña debes ingresar a: ${resetLink}\nRecuerda que debes hacerlo dentro de los próximos 30 minutos`
+    };
+
+    await enviar.sendMail(mailOptions);
+
+    // Se enviaron las instrucciones
+    res.redirect('/login');
+  } catch (error) {
+    console.error('Error al recuperar contraseña:', error);
+    // Redirigir a la página de olvido en caso de error
+    res.redirect('/olvido');
+  }
+});
+
 router.post('/logout', (req, res) => {
   req.logout(function (err) {
     if (err) {

@@ -5,9 +5,7 @@ import mongoose from 'mongoose'
 import Producto from '../models/products.js'
 import {ensureAuthenticated } from './users.js'
 // ruta compra realizada
-router.get('/compraRealizada', ensureAuthenticated, (req, res) => { 
-  res.render('pages/compraRealizada')
-})
+
 
 
 
@@ -163,33 +161,7 @@ router.post('/carrito/eliminar/:index', (req, res) => {
   res.redirect('/carrito');
 });
 
-/* router.get('/compraRealizada', async (req, res) => {
-  const userName = req.user.email;
-  const carrito = req.session.carrito || [];
 
-  try {
-    const productosCollection = mongoose.connection.collection('productos');
-
-    // Actualizar el stock de cada producto en la colección
-    for (const producto of carrito) {
-      const { nombre, cantidad } = producto;
-
-      await productosCollection.updateOne(
-        { nombre: nombre },
-        { $inc: { stock: -cantidad } } // Restar la cantidad del producto al stock
-      );
-    }
-
-    // Vaciar el carrito y redirigir a la página principal o a otra página de éxito
-    req.session.carrito = [];
-    req.session.total = 0;
-    res.render('pages/compraRealizada', { userName });
-    
-  } catch (error) {
-    console.error('Error al actualizar el stock en la base de datos:', error);
-    res.redirect('/carrito',); // Redirigir a la página del carrito en caso de error
-  }
-}); */
 router.get('/compraRealizada', async (req, res) => {
   const userName = req.user.email;
   const carrito = req.session.carrito || [];
@@ -213,7 +185,7 @@ router.get('/compraRealizada', async (req, res) => {
     req.session.carrito = [];
     req.session.total = 0;
     req.flash('success_msg', 'Compra realizada');
-    res.render('/', { userName });
+    res.render('pages/compraRealizada', { userName:userName });
   } catch (error) {
     console.error('Error al actualizar el stock en la base de datos:', error);
     res.redirect('/carrito'); // Redirigir a la página del carrito en caso de error
