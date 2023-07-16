@@ -184,7 +184,6 @@ router.post('/changepassword', (req, res) => {
           })
       })
     })
-
 })
 //olvido password
 router.post('/olvido', (req, res) => {
