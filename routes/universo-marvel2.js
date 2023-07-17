@@ -1,4 +1,4 @@
-import express from 'express'
+/* import express from 'express'
 const router=express.Router()
 import passport from 'passport'
 
@@ -9,3 +9,4 @@ router.get('/universo-marvel2', (req, res) => {
 
 
 export default router
+ */
