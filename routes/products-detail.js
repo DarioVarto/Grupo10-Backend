@@ -6,58 +6,63 @@ import Producto from '../models/products.js'
 import {ensureAuthenticated } from './users.js'
 
 
+import productos from './productos.js'
 
-
-
-
-// Crear una función para cargar los productos en la base de datos
- async function cargarProductos() {
+async function cargarProductos(productos) {
   try {
-    // Crear un arreglo de productos
-    const productos = [
-      {
-        nombre: 'Producto 1',
-        descripcion: 'Descripción del producto 3',
-        stock:20,
-        precio: 100
-      },
-      {
-        nombre: 'Producto 2',
-        descripcion: 'Descripción del producto 3',
-        stock:20,
-        precio: 150
-      },
-      {
-        nombre: 'Producto 3',
-        descripcion: 'Descripción del producto 3',
-        stock:20,
-        precio: 200
-      },
-      {
-        nombre: 'Producto 4',
-        descripcion: 'Descripción del producto 4',
-        stock:30,
-        precio: 250
-      },
-      // Agrega más productos aquí si es necesario
-    ];
-
-    // Insertar los productos en la base de datos
     await Producto.insertMany(productos);
-    console.log('Productos cargados exitosamente');
+
+    console.log('Productos cargados en la base de datos.');
   } catch (error) {
-    console.error('Error al cargar los productos', error);
-  } 
-} 
+    console.error('Error al cargar los productos:', error);
+  }
+}
 
-// Llamar a la función para cargar los productos
-//comentar la funcion para que no siga cargando productos todo el tiempo
-/* cargarProductos();  */
+router.get('/shop-collections1', async (req, res) => {
+  try {
+    const productos = await obtenerProductosDesdeLaBaseDeDatos(); // Aquí obtienes tus productos de alguna manera
 
-router.get('/details', ensureAuthenticated, (req, res) => {
+    // Renderizar la vista y pasar la variable `productos` en el objeto de contexto
+    res.render('products/shop-collections1', { productos: productos });
+  } catch (error) {
+    console.error('Error al obtener los productos:', error);
+    res.render('pages/error404');
+  }
+});
+
+router.get('/details/:id', ensureAuthenticated, async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const producto = await Producto.findById(productId);
+
+    if (producto) {
+      res.render('products/details', { producto: producto, userName: req.user.email });
+    } else {
+      res.render('pages/error404');
+    }
+  } catch (error) {
+    console.error('Error al obtener los detalles del producto:', error);
+    res.render('pages/error404');
+  }
+});
+router.post('/details/:id', ensureAuthenticated, async (req, res) => {
   const userName = req.user.email;
-  res.render('products/details', { userName: userName });
-}); 
+  try {
+    const productId = req.params.id;
+    const producto = await Producto.findById(productId);
+
+    if (!producto) {
+      // Si el producto no se encuentra en la base de datos, muestra un error o redirige a otra página.
+      res.send('Producto no encontrado');
+      return;
+    }
+
+    res.render('products/details', { producto, userName });
+  } catch (error) {
+    console.error('Error al obtener el producto:', error);
+    res.redirect('/prod'); // Redirige a la página de productos en caso de error.
+  }
+});
 
 /* router.get('/prod', ensureAuthenticated, (req, res) => {
   const userNameValue = req.user.email;
@@ -70,38 +75,39 @@ router.get('/details', ensureAuthenticated, (req, res) => {
     })
 
 }) */
-router.get('/prod', ensureAuthenticated, (req, res) => {
+router.get('/prod', ensureAuthenticated, async (req, res) => {
   const userName = req.user.email;
-  Producto.find({})
-    .then((productos) => {
-      res.render('./products/prod', { productos, userName });
-    })
-    .catch((error) => {
-      res.render('products/prod', { userName });
-    });
+  try {
+    const productos = await Producto.find({});
+    res.render('./products/prod', { productos, userName });
+  } catch (error) {
+    console.error('Error al cargar los productos:', error);
+    res.render('products/prod', { userName });
+  }
 });
 
 
 router.post('/carrito/agregar',ensureAuthenticated, (req, res) => {
-  const { nombre, descripcion, precio, stock } = req.body;
+  const { title, description, prices, stock,images } = req.body;
   
   if (!req.session.carrito) {
     req.session.carrito = [];
     req.session.total = 0; // Establece el total en 0 si el carrito no existe
   }
   
-  const precioNum = parseFloat(precio);
+  const precioNum = parseFloat(prices);
   const stockNum = parseInt(stock);
   const producto = {
-    nombre,
-    descripcion,
-    precio: precioNum,
+    title,
+    description,
+    images,
+    prices: precioNum,
     stock: stockNum - 1,
     cantidad: 1
   };
   
   req.session.carrito.push(producto);
-  req.session.total += producto.precio; // Suma solo el precio del producto agregado
+  req.session.total += producto.prices; // Suma solo el precio del producto agregado
   
   res.redirect('/carrito');
 });
@@ -118,7 +124,7 @@ router.post('/carrito/sumar/:index', (req, res) => {
       }
       producto.cantidad += 1;
       producto.stock -= 1;
-      req.session.total += producto.precio;
+      req.session.total += producto.prices;
     }
   }
   
@@ -134,7 +140,7 @@ router.post('/carrito/restar/:index', (req, res) => {
     if (producto.cantidad > 1) {
       producto.cantidad -= 1;
       producto.stock += 1;
-      req.session.total -= producto.precio; // Resta solo el precio del producto restado
+      req.session.total -= producto.prices; // Resta solo el precio del producto restado
     } else {
       req.session.carrito.splice(index, 1);
     }
@@ -170,10 +176,10 @@ router.get('/compraRealizada', async (req, res) => {
   try {
     // Actualizar el stock de cada producto en la colección
     for (const producto of carrito) {
-      const { nombre, cantidad } = producto;
+      const { title, cantidad } = producto;
 
       // Buscar el producto en la base de datos por su nombre
-      const productoDB = await Producto.findOne({ nombre });
+      const productoDB = await Producto.findOne({ title });
 
       // Restar la cantidad del producto al stock
       productoDB.stock -= cantidad;
@@ -194,20 +200,4 @@ router.get('/compraRealizada', async (req, res) => {
 });
 
 
-//renderizado estatico de productos top-sale hasta completar el agregado de productos con funcion cargarProductos()
-router.get('/top-sale-1', (req, res) => {
-  let userName = req.user ? req.user.email : '';
-  res.render('products/top-sale-1', { userName: userName });
-});
-router.get('/top-sale-2', (req, res) => {
-  let userName = req.user ? req.user.email : '';
-  res.render('products/top-sale-2', { userName: userName });
-});
-router.get('/top-sale-3', (req, res) => {
-  let userName = req.user ? req.user.email : '';
-  res.render('products/top-sale-3', { userName: userName });
-});
-
-export default router
-
-
+export default router  

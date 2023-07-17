@@ -1,4 +1,4 @@
-import express from 'express'
+/* import express from 'express'
 const router = express.Router()
 import Product2 from '../models/products.js'
 
@@ -15,4 +15,4 @@ router.post('/productos', async(req,res)=>{
 
 
 
-export default router
+export default router */
