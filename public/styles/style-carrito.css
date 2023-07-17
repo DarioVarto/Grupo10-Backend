@@ -1,23 +1,34 @@
 /*ESTILOS CARRITO**/
 
 .carro-container {
-    background-color: rgba(189, 173, 152,0.2);
+    background-color: rgba(189, 173, 152, 0.2);
     margin-top: 20px;
     padding: 5px;
     width: 50%;
+    height: 100%;
     border-radius: 20px;
-    border-style: solid;
-    border-color: transparent
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .botones-carro {
     display: flex;
+    align-items: center;
     border: 2px solid transparent;
+    flex-direction: column;
+}
+
+.botones1 {
+    display: flex;
+    align-items: center;
 }
 
 .btn-comprar {
     display: flex;
     justify-content: center;
+    align-items: start;
+
 }
 
 .btn-comprar .botoncomp {
@@ -28,13 +39,33 @@
     display: flex;
     justify-content: end;
 }
-.btn-eliminar{
+
+.btn-eliminar {
     background-color: aliceblue;
     opacity: 0.8;
 }
-.total{
+
+.total {
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
 }
+
+/*imagen carrito*/
+.imagen-carro {
+    width: 30%;
+    height: 30%;
+    margin-bottom: 5px;
+}
+
+.img-cart {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 /* Estilo banner compra*/
 
 .typewriter {

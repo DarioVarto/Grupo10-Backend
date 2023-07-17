@@ -1,52 +1,59 @@
 <%- include("../partials/head.ejs")%>
-<%- include("../partials/header.ejs")%>
-<%- include("../partials/navBar.ejs")%>
-<div class="h-25">
-<div class="d-flex justify-content-center flex-wrap carro-container h-25">
-  <h1 class="text-center">CARRITO DE COMPRAS</h1>
-  <div class="d-flex justify-content-center">
-    <a href="/prod"><h3 class="text-danger fw-bold mt-3">Elegir más productos</h3></a>
-  </div>
+  <%- include("../partials/header.ejs")%>
+    <%- include("../partials/navBar.ejs")%>
 
-    <% carrito.forEach((producto, index) => { %>
-    <div class="d-flex mt-3 h-25">
-      <div>
-        <h2 class="fw-bold">
-          <%= producto.title %>
-        </h2>
-        <img src="<%= producto.images %>" alt="Imagen del producto" class="h-25"> <!-- Mostrar la imagen del producto -->
-        <p class="fw-bold text-primary">Precio: $<%= producto.price %></p>
-        <p>Unidades disponibles: <%= producto.stock %></p>
-        <p>Cantidad: <%= producto.cantidad || 1 %></p> <!-- Mostrar el número 1 como valor predeterminado -->
-          
-
-            <div class="botones-carro">
-
-              <form action="/carrito/eliminar/<%= index %>" method="POST">
-                <button class="btn   m-2 btn-eliminar" type="submit">Eliminar</button>
-              </form>
-
-              <form action="/carrito/restar/<%= index %>" method="POST">
-                <button class="btn btn-secondary m-2 btn-restar" type="submit" <%=producto.cantidad===1 ? 'disabled' : '' %>>Quitar
-                  -</button> <!-- Botón para restar cantidad -->
-              </form>
-
-              <form action="/carrito/sumar/<%= index %>" method="POST">
-                <button class="btn btn-danger m-2" type="submit" <%=producto.stock===0 ? 'disabled' : '' %>>Agregar
-                  +</button> <!-- Botón para sumar cantidad -->
-              </form>            
-             
-            </div>
-
-          </div>
+      <div class="carro-container">
+        <div class="d-flex justify-content-center flex-wrap  h-25">
+          <h2 class="text-center fw-bold">CARRITO DE COMPRAS</h2>
         </div>
-        <% }); %>
+        <div class="d-flex justify-content-center">
+          <a href="/prod">
+            <h4 class="text-danger fw-bold mt-2">Elegir más productos</h4>
+          </a>
+        </div>
+        <% carrito.forEach((producto, index)=> { %>
+          <div class="d-flex mt-3 h-25">
+            <div class="img-cart">
+              <h4 class="fw-bold">
+                <%= producto.title %>
+              </h4>
+              <img src="<%= producto.images %>" alt="Imagen del producto" class="imagen-carro">
+              <!-- Mostrar la imagen del producto -->
+              <p class="fw-bold text-primary">Precio: $<%= producto.price %>
+              </p>
+              <p>Unidades disponibles: <%= producto.stock %>
+              </p>
+              <p>Cantidad: <%= producto.cantidad || 1 %>
+              </p> <!-- Mostrar el número 1 como valor predeterminado -->
 
-          <p class="text-center fw-bold mt-2 total">Total: $ <%= total %>
-          </p> <!-- Muestra la suma total -->
-          <div class="btn-comprar">
-            <a href="/compraRealizada"><button class="btn btn-primary m-2 botoncomp">Comprar</button></a>
+              <div class="botones-carro">
+                <div class="botones1">
+                  <form action="/carrito/eliminar/<%= index %>" method="POST">
+                    <button class="btn   m-2 btn-eliminar" type="submit">Eliminar</button>
+                  </form>
+                  <form action="/carrito/restar/<%= index %>" method="POST">
+                    <button class="btn btn-secondary m-2 btn-restar" type="submit" <%=producto.cantidad===1 ? 'disabled'
+                      : '' %>>Quitar
+                      -</button> <!-- Botón para restar cantidad -->
+                  </form>
+                  <form action="/carrito/sumar/<%= index %>" method="POST">
+                    <button class="btn btn-danger m-2" type="submit" <%=producto.stock===0 ? 'disabled' : '' %>>Agregar
+                      +</button> <!-- Botón para sumar cantidad -->
+                </div>
+                <div class="total mt-2">
+                  <p class="text-center fw-bold mt-2">Total: $ <%= total %>
+                  </p> <!-- Muestra la suma total -->
+
+
+                </div>
+
+                </form>
+
+              </div>
+
+            </div>
           </div>
-
-    </div>
-  </div>
+          <% }); %>
+            <div class="btn-comprar">
+              <a href="/compraRealizada"><button class="btn btn-primary m-2 botoncomp">Comprar</button></a>
+            </div>
