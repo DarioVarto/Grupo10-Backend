@@ -52,7 +52,7 @@ import {ensureAuthenticated } from './users.js'
 
 // Llamar a la función para cargar los productos
 //comentar la funcion para que no siga cargando productos todo el tiempo
-/* cargarProductos();  */
+// cargarProductos(); 
 
 router.get('/details', ensureAuthenticated, (req, res) => {
   const userName = req.user.email;

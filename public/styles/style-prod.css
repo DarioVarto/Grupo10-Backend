@@ -1,0 +1,12 @@
+.prod-container{
+background-color: red;
+display:flex;
+width: 400px;
+justify-content: center;
+margin:0;
+}
+
+.prod{
+    display: flex;
+    width: 200px;
+}

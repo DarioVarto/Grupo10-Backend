@@ -3,27 +3,30 @@
   <%- include("../partials/navBar.ejs")%>
 
     <% productos.forEach((producto)=> { %>
-      <div class="container-fluid carro-container">
+    
+      <div class="prod-container">
+        <!-- container-fluid carro-container  -->
 
-
-        <div>
-          <h1 class="text-center">
-            <%= producto.nombre %>
+        <div class="prod">
+          <h1>
+            <%= producto.title %>
           </h1>
-          <p class="text-dark mt-1">
-            <%= producto.descripcion %>
+          <img src="http://i.annihil.us/u/prod/marvel/i/mg/9/03/56f465c004665.jpg" alt="" class="prod">
+          <p class="text-dark ">
+            <%= producto.description %>
           </p>
-          <p class="text-primary fw-bold mt-5">Precio: <%= producto.precio %>
+          <p class="text-primary fw-bold">Precio: <%= producto.price %>
           </p>
-          <p class="text-dark mt-5">Unidades disponibles: <%= producto.stock %>
+          <p class="text-dark">Unidades disponibles: <%= producto.stock %>
           </p>
         </div>
 
         <div class="btn-comprar">
 
           <form action="/carrito/agregar" method="POST">
-            <input type="hidden" name="nombre" value="<%= producto.nombre %>">
-            <input type="hidden" name="descripcion" value="<%= producto.descripcion %>">
+            <input type="hidden" name="nombre" value="<%= producto.title %>">
+            <input type="hidden" name="descripcion" value="<%= producto.description %>">
+            <input type="hidden" name="img" value="<%= producto.images %>">
             <input type="hidden" name="precio" value="<%= producto.precio %>">
             <input type="hidden" name="stock" value="<%= producto.stock %>">
             <button class="btn btn-success m-2 text-center btn-agregar" type="submit">Agregar al Carrito</button>
