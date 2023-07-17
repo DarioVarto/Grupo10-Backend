@@ -37,17 +37,19 @@ body{
     margin-left:-30px
 }
 
-.etiquetas>p{
+.etiquetas p{
     background-color:black;
     padding:4px 6px;
     margin: 0px 4px 15px 0px;
     color:rgb(243, 243, 243);
     font-size:16px;
 }
-
+ /*imagen de la card*/
 .imagen{
-    margin:0 auto;
-    width:22rem
+   
+    width:22rem;
+    height: 100%;
+    margin-bottom: 5px;
 }
 
 .detalles-producto{
