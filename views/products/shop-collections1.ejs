@@ -3,7 +3,7 @@
 <%- include("../partials/navBar.ejs") %>
 
 <div class="d-flex justify-content-center flex-wrap">
-  <% productos.forEach((producto) => { %>
+  <% productos.slice(0, 20).forEach((producto) => { %>
     <div class="card col-4">
       <div class="etiquetas">
         <p>NUEVO</p>
@@ -24,6 +24,3 @@
   <% }); %>
 </div>
 <%- include('../partials/footer') %>
-
-   
-

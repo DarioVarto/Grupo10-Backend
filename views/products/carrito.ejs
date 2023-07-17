@@ -1,28 +1,23 @@
 <%- include("../partials/head.ejs")%>
 <%- include("../partials/header.ejs")%>
-  <%- include("../partials/navBar.ejs")%>
+<%- include("../partials/navBar.ejs")%>
+<div class="h-25">
+<div class="d-flex justify-content-center flex-wrap carro-container h-25">
+  <h1 class="text-center">CARRITO DE COMPRAS</h1>
+  <div class="d-flex justify-content-center">
+    <a href="/prod"><h3 class="text-danger fw-bold mt-3">Elegir más productos</h3></a>
+  </div>
 
-    <div class="container-fluid carro-container">
-      <h1 class="text-center">CARRITO DE COMPRAS</h1>
-      <div class="d-flex justify-content-center">
-        <a href="/prod" ><h3 class="text-danger fw-bold mt-3">Elegir más productos</h3></a>
-    </div>
-    
-      <% carrito.forEach((producto, index)=> { %>
-        <div class="d-flex mt-3 ">
-          <div>
-            <h2 class="fw-bold">
-              <%= producto.nombre %>
-            </h2>
-            <p>
-              <%= producto.descripcion %>
-            </p>
-            <p class="fw-bold text-primary">Precio: <%= producto.precio %>
-            </p>
-            <p>Unidades disponibles: <%= producto.stock %>
-            </p>
-            <p>Cantidad: <%= producto.cantidad || 1 %>
-            </p> <!-- Mostrar el número 1 como valor predeterminado -->
+    <% carrito.forEach((producto, index) => { %>
+    <div class="d-flex mt-3 h-25">
+      <div>
+        <h2 class="fw-bold">
+          <%= producto.title %>
+        </h2>
+        <img src="<%= producto.images %>" alt="Imagen del producto" class="h-25"> <!-- Mostrar la imagen del producto -->
+        <p class="fw-bold text-primary">Precio: $<%= producto.prices %></p>
+        <p>Unidades disponibles: <%= producto.stock %></p>
+        <p>Cantidad: <%= producto.cantidad || 1 %></p> <!-- Mostrar el número 1 como valor predeterminado -->
           
 
             <div class="botones-carro">
@@ -54,3 +49,4 @@
           </div>
 
     </div>
+  </div>
