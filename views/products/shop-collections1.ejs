@@ -14,7 +14,7 @@
         <img src="<%= producto.images %>" class="card-img-top" alt="">
       </div>
       <div class="card-body">
-        <p class="card-title price"> $ <%= producto.prices %></p>
+        <p class="card-title price"> $ <%= producto.price %></p>
         <p class="card-text description"> <%= producto.title %> </p>
         <form action="/details/<%= producto._id %>" method="GET">
           <button class="btn btn-info btn-detail" type="submit">DETAILS</button>

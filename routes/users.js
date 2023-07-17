@@ -124,8 +124,21 @@ router.get('/alluser', ensureAuthenticated, (req, res) => {
     })
 
 })
+// //RUTA DASHBOARD
+// router.get('/alluser', ensureAuthenticated, (req, res) => {
+//   router.get('/dashboard', (req, res) => {
+//   const userName = res.locals.userName;
+//   User.find({})
+//     .then(usuarios => {
+//       res.render('./admin/dashboard', { usuarios: usuarios })
+//     })
+//     .catch(error => {
+//       res.render('/admin/dashboard')
+//     })
+
+// })
 //RUTA DASHBOARD
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
   const userName = res.locals.userName;
   User.find({})
     .then(usuarios => {
@@ -134,30 +147,6 @@ router.get('/dashboard', (req, res) => {
     .catch(error => {
       res.render('/admin/dashboard')
     })
-
-})
-//RUTA DASHBOARD
-router.get('/dashboard', (req, res) => {
-  const userName = res.locals.userName;
-  User.find({})
-    .then(usuarios => {
-      res.render('./admin/dashboard', { usuarios: usuarios })
-    })
-    .catch(error => {
-      res.render('/admin/dashboard')
-    })
-
-})
-//RUTA DASHBOARD
-router.get('/dashboard', (req, res) => {
-  User.find({})
-    .then(usuarios => {
-      res.render('./admin/dashboard', { usuarios: usuarios })
-    })
-    .catch(error => {
-      res.render('/admin/dashboard')
-    })
-
 
 })
 
@@ -233,7 +222,7 @@ passport.authenticate('local', (err, usuario, info) => {
     return res.redirect('/login');
   }
   if (usuario.esAdmin) {
-    return res.redirect('/alluser');
+    return res.redirect('/dashboard');
   } else {
     return res.redirect('/');
   }

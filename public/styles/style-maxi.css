@@ -22,7 +22,7 @@
 
 }
 
-.h1maxi {
+.h1shop {
     font-size: 55px;
     font-weight: 900;
     color: black;
@@ -36,7 +36,7 @@
 
 .img-seccion {
     width: 100%;
-    height: 450px;
+    height: 100%;
 }
 
 .box {
@@ -72,6 +72,7 @@
 
 .box-footer-maxi {
     font-weight: bold;
+    text-align: center;
 }
 
 .p-footer {
@@ -79,32 +80,62 @@
     font-weight: bold;
     text-transform: none
 }
- .p-footer2 p {
+
+.p-footer2 p {
     margin-left: 55px;
- }
+    text-align: center;
+}
 
 /*Estilo DASHBOARD*/
-.dashboard{
-    background-color:gray;
+.dashboard {
+    background-color: gray;
     display: flex;
     justify-content: center;
     align-items: center;
 
 }
 
-.dashboard h1{
+.dashboard h1 {
     text-align: center;
     font-size: 60px;
     color: white;
     margin-top: 10px;
 }
 
-.dashboard .col{
+.dashboard .col {
     height: 100px;
     display: flex;
     justify-content: center;
 }
-.btn-dash{
+
+.btn-dash {
     font-size: 1.5rem;
     color: beige;
+}
+
+
+@media screen and (max-width: 400px) {
+    .h1shop {
+        font-size: 40px;
+        display: flex;
+        text-align: center;
+    }
+ 
+    
+    .box{
+        
+        text-align: center;
+    }
+
+    .box-footer-maxi {
+        text-align: center;
+        width: 100%;
+
+    }
+
+    .foot-header {
+        width: 100%;
+        
+        
+        }
 }
