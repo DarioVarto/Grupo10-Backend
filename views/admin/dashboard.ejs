@@ -1,0 +1,28 @@
+<%- include("../partials/head.ejs")%>
+<%- include("../partials/header.ejs")%>
+ 
+
+        <div class="container-fluid dashboard ">
+            <div class="row" style="background-color:rgba(255, 5, 18, 0.384)">
+                <h1>◽ DASHBOARD ◽</h1>
+                <%- include('../partials/messages') -%>
+                <div class="col " style="background-color:#bdad98">
+                    <div class="btn-group m-3" role="group" aria-label="Basic mixed styles example">
+                        <button type="button" class="btn btn-primary">
+                            <a class="btn-dash" href="/alluser/">EDITAR USUARIOS</a>
+                        </button>
+                        <button type="button" class="btn btn-secondary" disabled>
+                            <a class="btn-dash" href="#"  >SECCIÓN ADMINISTRADOR</a></button>
+                        <button type="button" class="btn btn-primary">
+                            <a class="btn-dash" href="/allproducts">EDITAR PRODUCTOS</a></button>
+                    </div>
+                    </div>
+                    
+
+
+
+            </div>
+        </div>
+        <%- include("../partials/footer-admin.ejs")%>
+
+

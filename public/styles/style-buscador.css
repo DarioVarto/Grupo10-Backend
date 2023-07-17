@@ -1,0 +1,57 @@
+.nav-bar .nav-bar-form {
+    border: none;
+    border-radius: 50px;
+    cursor:text;
+    border: 100px;
+}
+
+input[type=search]{
+    background-size: 15px;
+    border:none;
+    letter-spacing: .1em;
+    width: 300px;
+    outline:0;
+    padding-left:35px;
+}
+
+input[type=search]::-webkit-search-cancel-button{
+    -webkit-appearance: none;
+}
+
+
+h3[name=avengerName]{
+    font-size:10px;
+    max-width:168px;
+}
+
+.ratio{
+    width:168px;
+    height: 168px;
+}
+
+
+
+#character{
+    margin-top:130px;
+    margin-bottom:50px;
+    margin-left:0px;
+    width:100%
+}
+
+.avengerCard{
+    display:inline-block;
+    padding: 10px;
+}
+
+.link{
+    text-decoration:none;
+}
+
+.link :hover{
+    transform: scale(1.15);
+    transition: 0.1s;
+}
+
+
+
+

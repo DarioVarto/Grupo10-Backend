@@ -1,16 +1,112 @@
-<%- include("../partials/head.ejs")%>
-<%- include("../partials/header.ejs")%>
+<style type="text/css">
+  p {
+    color: rgb(44, 44, 155);
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+h1{
+  margin-left: 30px;
+}
+  h2 {
+    background-color: rgb(112, 104, 104);
+    color: white;
+  }
 
-<div>
-    <h1>Daredevil & Echo - N1 (1994)</h1>
-    <div class="section-detail">
-        <img src="imagenes/comic2.jpg" alt="" class="img-detail">
-        <div class="section-details-info">
-            <button class='btn-two'>BUY NOW</button>
-            <p>Detalle</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum ex doloremque labore, asperiores aspernatur voluptas architecto officia doloribus suscipit totam ea aut! Mollitia, eius esse similique fugit impedit, facilis dicta eum harum dolore dolorem dolorum repudiandae maiores laborum unde. Molestiae deserunt nisi excepturi possimus ipsum minus provident dolorem nesciunt inventore placeat fugiat, omnis aliquam quidem officia unde adipisci illum repellat illo saepe beatae vitae explicabo nam odit iusto? Assumenda et minima hic explicabo nihil esse facere culpa. Atque ex enim aperiam, unde error nihil deserunt dolor provident labore porro praesentium? Distinctio ea impedit labore commodi. Tempore aspernatur ab, consequatur corrupti quibusdam iure in laboriosam repellendus, impedit, veritatis temporibus maxime. Eum quibusdam veniam iure eos rem eius beatae! Ullam, nobis culpa cum asperiores ipsum vitae rerum incidunt, tempora accusamus ipsam suscipit nesciunt illum consectetur aspernatur doloremque perferendis maxime at recusandae animi facere necessitatibus architecto. Deserunt aliquam ex quibusdam cumque deleniti nulla maxime aspernatur, animi aliquid nostrum labore ullam molestias ea. Autem eligendi earum animi, ab perspiciatis atque? Reiciendis, laudantium eligendi! Aut neque ipsum natus debitis, delectus laboriosam quo sed! Nisi, iure! Repellat nisi, eum aut odit error quidem ab nihil doloribus quis sit? Laboriosam sit quod, eaque nobis magnam pariatur saepe.</p>
-        </div>
-    </div>
+  button {
+    color: white;
+    background-color: rgb(11, 94, 215);
+    height: 35px;
+    width: 150px;
+    border-radius: 10%;
+    margin-left: 25%;
+   
+  }
+
+  img {
+    height: 60%;
+    width: 60%;
+    align-items: center;
+    margin-left: 30px;
+  }
+
+  .carro {
+    background-color: rgb(206, 194, 179);
+    width: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-left: 20%;
+    border-radius: 5%;
+  }
+  .div1{
+    width: 50%;
+    padding: 30px;
+  }
+  .div2{
+    width: 50%;
+    text-align: justify;
+    padding: 30px;
+       
+  }
+  .div1 p{
+    text-align: center;
+  }
+  .div2 h1{
+    text-align: center;
+  }
+
+  .foto-carro {
+    align-items: center;
+  }
+</style>
+
+<div class="carro">
+  <div>
+  <h1>Titulo: <%= producto.title %></h1>
+  <img src="<%= producto.images %>" class="foto-carro" alt="">
+
+  <div class="div1">
+    <p>Precio: $ <%= producto.price %></p>
+    
+    <form action="/carrito/agregar" method="POST">
+      <input type="hidden" name="title" value="<%= producto.title %>">
+      <input type="hidden" name="description" value="<%= producto.description %>">
+      <input type="hidden" name="price" value="<%= producto.price %>">
+      <input type="hidden" name="stock" value="<%= producto.stock %>">
+      <input type="hidden" name="images" value="<%= producto.images %>">
+      <button class="btn btn-danger btn-detail" type="submit">COMPRAR</button>
+    </form>
+  </div>
+  </div>
+<div class="div2">
+  <h1>Descripcion: </h1>
+  <P>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio autem maiores ex consequuntur aliquam est sunt libero quam animi fugiat pariatur suscipit nisi, exercitationem eum porro voluptate doloremque dolores accusantium.
+Lorem ipsum dolor sit, amet consectetur adipisicing elit. In repudiandae commodi perspiciatis iusto debitis optio officiis, dignissimos sit tempora adipisci quibusdam suscipit qui excepturi! A voluptates accusantium vitae eius! Corporis.    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit doloribus accusamus ipsum esse aspernatur molestiae tenetur aliquid dolor dignissimos laudantium illum ea eius maxime, porro soluta enim necessitatibus a?</P>
+</div>
 </div>
 
-<%- include("../partials/footer.ejs") %>
+<!-- <div class="container-fluid carro-container">
+  <div class="card col-4">
+    <div class="etiquetas">
+      <p>NUEVO</p>
+      <p>EXCLUSIVO</p>
+      <p>BEST SELLER</p>
+    </div>
+    <div class="imagen">
+      <img src="<%= producto.images %>" class="card-img-top" alt="">
+    </div>
+    <div class="card-body">
+      <p class="card-title price"> $ <%= producto.price %></p>
+      <p class="card-text description"> <%= producto.title %> </p>
+      <form action="/carrito/agregar" method="POST">
+        <input type="hidden" name="title" value="<%= producto.title %>">
+        <input type="hidden" name="description" value="<%= producto.description %>">
+        <input type="hidden" name="price" value="<%= producto.price %>">
+        <input type="hidden" name="stock" value="<%= producto.stock %>">
+        <input type="hidden" name="images" value="<%= producto.images %>">
+        <button class="btn btn-danger btn-detail" type="submit">COMPRAR</button>
+      </form>
+    </div>
+  </div>
+</div> -->

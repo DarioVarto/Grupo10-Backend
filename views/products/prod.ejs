@@ -1,0 +1,29 @@
+<%- include("../partials/head.ejs") %>
+  <%- include("../partials/header.ejs", { userName: userName }) %>
+    <%- include("../partials/navBar.ejs") %>
+
+      <div class="d-flex justify-content-center flex-wrap">
+        <% productos.forEach((producto)=> { %>
+          <div class="card col-4">
+            <div class="etiquetas">
+              <p>NUEVO</p>
+              <p>EXCLUSIVO</p>
+              <p>BEST SELLER</p>
+            </div>
+            <div class="imagen">
+              <img src="<%= producto.images %>" class="card-img-top" alt="">
+            </div>
+            <div class="card-body">
+              <p class="card-title price"> $ <%= producto.price %>
+              </p>
+              <p class="card-text description">
+                <%= producto.title %>
+              </p>
+              <form action="/details/<%= producto._id %>" method="GET">
+                <button class="btn btn-danger btn-detail" type="submit">DETALLES</button>
+              </form>
+            </div>
+          </div>
+          <% }); %>
+      </div>
+      <%- include('../partials/footer') %>

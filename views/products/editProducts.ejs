@@ -1,0 +1,31 @@
+
+
+
+<%- include("../partials/head.ejs") %>
+<div class="col-12">
+  <div class="container p-3 w-50">
+    
+    <h1 class="text-center mt-5 mb-3">Modificar Producto</h1>
+    <%- include('../partials/messages') -%>
+    <!-- Actualiza el método del formulario a POST y la acción a /editProducts/producto_id -->
+    <form action="/editProducts/<%= producto._id %>?_method=PUT" method="POST">
+
+      <div class="form-group px-0 mt-5 mb-3">
+        <input value="<%= producto.title %>" type="text" name="title" class="form-control" placeholder="Título">
+      </div>
+
+      <div class="form-group px-0 mt-5 mb-3">
+        <input value="<%= producto.stock %>" type="number" name="stock" class="form-control" placeholder="Stock">
+      </div>
+      <div class="form-group px-0 mt-5 mb-3">
+        <input value="<%= producto.price %>" type="number" name="price" class="form-control" placeholder="Precio">
+      </div>
+      <div class="d-flex justify-content-center mt-5 mb-3">
+        
+        <button type="submit" class="btn btn-outline-dark btn-primary">Actualizar</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+<%- include("../partials/footer-admin.ejs")%>

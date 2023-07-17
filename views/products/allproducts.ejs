@@ -1,0 +1,68 @@
+<%- include("../partials/head.ejs")%>
+
+
+    <div class="col-12">
+        <div class="container-fluid p-3 w-100">
+            <h4 class="mt-5 mb-4 text-center"><a href="/dashboard">VOLVER AL DASHBOARD</a></h4>
+            <h1 class="mt-5 mb-4 text-center">Todos los Productos</h1>
+            <%- include('../partials/messages') -%>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="background-color:#bdad98">ID</th>
+                            <th style="background-color:#bdad98">Título</th>
+                            <th style="background-color:#bdad98">Stock</th>
+                            <th style="background-color:#bdad98">Precio</th>
+                            <th style="background-color:#bdad98">Edicion</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th style="background-color:#bdad98">ID</th>
+                            <th style="background-color:#bdad98">Título</th>
+                            <th style="background-color:#bdad98">Stock</th>
+                            <th style="background-color:#bdad98">Precio</th>
+                            <th style="background-color:#bdad98">Edicion</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <% productos.forEach((producto)=> { %>
+                            <tr>
+                                <td>
+                                    <%= producto._id %>
+                                </td>
+                                <td>
+                                    <%= producto.title %>
+                                </td>
+                                <td>
+                                    <%= producto.stock %>
+                                </td>
+                                <td>
+                                    <%= producto.price %>
+                                </td>
+                                <td>
+                                    <!-- Modifica el método y la acción del formulario -->
+                                    <div class="d-flex">
+                                    <form action="/editProducts/<%= producto._id %>" method="GET">
+                                        <button type="submit" class="btn btn-primary me-1">Edit</button>
+                                    </form>
+                                    <form style="display: inline;"
+                                        action="/delete/producto/<%= producto.id %>?_method=DELETE" method="POST">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button style="cursor: pointer;" type="submit"
+                                            class="btn btn-danger ml-2">Delete</button>
+                                    </form>
+                                </div>
+                                </td>
+
+                            </tr>
+
+                            <% }); %>
+
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    </div>
+
+    <%- include('../partials/footer') -%>

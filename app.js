@@ -1,8 +1,8 @@
 import express from 'express';
 //Me permite a través de sus métodos ahorrar lineas de código
 
-    const app = express();
-    //Guardo los métodos de express en la constante app
+const app = express();
+//Guardo los métodos de express en la constante app
 
 import path from 'path';
 
@@ -30,35 +30,53 @@ import passport from 'passport';
 import LocalStrategy from 'passport-local'
 //Extensión del passport. Permite tener crear sesiones de forma local con usuario y contraseña sin utilizar gmail, facebook para el inicio de sesión
 
-import morgan from 'morgan' 
+import morgan from 'morgan'
 //Muestra resultado de las peticiones en la consola
-
-import userRoutes from './routes/users.js'
+import { router } from './routes/users.js'
+const userRoutes = router
+/* import userRoutes from './routes/users.js' */
 import productRoutes from './routes/products-detail.js'
+
+
 
 import User from './models/usermodels.js'
 
-dotenv.config({path : './config.env'});
+
+
+dotenv.config({ path: './config.env' });
 
 mongoose.connect(process.env.MONGO_GRUPO10, {
-    
+
 })
-.then(con => {
-    console.log('La base de datos está conectada');
-})
-.catch(error=>console.log('error'));
+    .then(con => {
+        console.log('La base de datos está conectada');
+    })
+    .catch(error => console.log('error'));
 
 app.use(session({
-    secret : 'El usuario esta conectado',
-    resave : true,
-    saveUninitialized : true //Permite navegar sin iniciar sesión
+    secret: 'El usuario esta conectado',
+    resave: true,
+    saveUninitialized: true //Permite navegar sin iniciar sesión
 }));
 
 app.use(passport.initialize());
 
 app.use(passport.session()); //Guarda los datos de la sesión en un objeto denominado req.user
 
-passport.use(new LocalStrategy({usernameField : 'email'}, User.authenticate()));//Método de comparación entre el dato ingresado y el que figura en la base de datos, en este caso el email
+passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));//Método de comparación entre el dato ingresado y el que figura en la base de datos, en este caso el email
+
+//funcion para que no te desloguee cuando navegas
+app.use((req, res, next) => {
+    res.locals.userName = req.user ? req.user.email : null;
+    next();
+});
+
+//funcion numero del carrito
+app.use((req, res, next) => {
+
+    res.locals.productoCant = req.producto ? req.producto.cantidad : null;
+    next();
+});
 
 passport.serializeUser(User.serializeUser());
 
@@ -68,7 +86,7 @@ app.use(methodOverride('_method'));
 
 app.use(flash());
 
-app.use((req, res, next)=> {
+app.use((req, res, next) => {
     res.locals.success_msg = req.flash(('success_msg'));
     res.locals.error_msg = req.flash(('error_msg'));
     res.locals.error = req.flash(('error'));
@@ -76,7 +94,7 @@ app.use((req, res, next)=> {
     next();
 });
 
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
@@ -85,21 +103,26 @@ app.use(express.static('public')); //Conexión a carpeta public
 app.use(userRoutes);
 app.use(productRoutes);
 
+app.get('/productos', (req, res) => {
+    res.send("Hola desde productos")
+})
+
+
 app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({extended:true}))
-app.set('view engine','ejs')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.use(flash())
 
 
-dotenv.config({path:'./config.env'})
+dotenv.config({ path: './config.env' })
 
 
 
 
-    
 
-app.listen(process.env.PORT,()=>{
+
+app.listen(process.env.PORT, () => {
     console.log('el servidor se está ejecutando')
 })

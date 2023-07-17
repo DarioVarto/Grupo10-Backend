@@ -1,23 +1,27 @@
 <%- include("../partials/head.ejs")%>
-<%- include("../partials/navBar.ejs")%>
+
 
 <div class="col-12">
-    <div class="container p-3 w-100">
-        <h1 class="mt-5 mb-4">Usuarios registrados</h1>
+    <div class="container-fluid p-3 w-100">
+        <h4 class="mt-5 mb-4 text-center"><a href="/dashboard">VOLVER AL DASHBOARD</a></h4>
+        <h1 class="mt-5 mb-4 text-center">Usuarios Registrados</h1>
+        
         <%- include('../partials/messages') -%>
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th style="background-color:#bdad98">Nombre</th>
+                    <th style="background-color:#bdad98">Email</th>
+                    <th style="background-color:#bdad98">Edicion</th>
+                    <th style="background-color:#bdad98">Usuario Administrador</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th style="background-color:#bdad98">Nombre</th>
+                    <th style="background-color:#bdad98">Email</th>
+                    <th style="background-color:#bdad98">Edicion</th>
+                    <th style="background-color:#bdad98">Usuario Administrador</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -44,5 +48,5 @@
     </div>
 </div>
 </div>
+<%- include("../partials/footer-admin.ejs")%>
 
-<%- include('../partials/footer') -%>

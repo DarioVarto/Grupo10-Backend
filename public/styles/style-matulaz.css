@@ -19,44 +19,37 @@ body{
 /*TOP SALES SECTION */
 .cards{
     display:flex;
-    justify-content: center;
-}
+} 
 
 .card{
     border: 1px rgb(240, 240, 240) solid;
-    margin:10px 0px 10px 0px;
-    height: 100%;
-    width: 100%;
-    padding:0px 20px 20px 20px
+    padding:0px 30px;
 }
 
 .card .price{
     font-family: 'Inter', sans-serif;
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 800;
-    margin:12px 0px;
 }
 
 .etiquetas{
     display: flex;
-    margin-left:-20px
+    margin-left:-30px
 }
 
-.etiquetas>p{
+.etiquetas p{
     background-color:black;
     padding:4px 6px;
     margin: 0px 4px 15px 0px;
     color:rgb(243, 243, 243);
     font-size:16px;
 }
-
+ /*imagen de la card*/
 .imagen{
-    display:flex;
-    justify-content: center;
-}
-
-.imagen>img{
-    width: 300px;
+   
+    width:22rem;
+    height: 100%;
+    margin-bottom: 5px;
 }
 
 .detalles-producto{
@@ -67,26 +60,13 @@ body{
 .card .description{
     text-transform: none;
     font-family: 'Inter', sans-serif;
-    font-size: 24px;
+    font-size: 20px;
 }
 
-.btn-one-box{
-    display:flex;
-    justify-content: center;
-    height: 60px;
-}
-.btn-one{
-    width: 100%;
-    color:white;
-    background-color:#dd1229;
-    border:none;
-    padding: 8px 20px ;
-    font-size:24px;
-    font-weight: 500;
-}
-
-.transparente{
-    opacity:0.25
+.btn-detail{
+    font-size: 18px;
+    width:100%;
+    margin-bottom:30px
 }
 
 
@@ -95,24 +75,9 @@ body{
 .custom-section{
     display: flex;
     border: 1px rgb(240, 240, 240) solid;
-    margin-top:30px;
     align-items: center;
-    padding-right: 100px;
 }
 
-.basis{
-    flex-basis: 100%;
-}
-
-
-.custom-section>div>img{
-    width: 100%;
-}
-
-.custom-text{
-    margin-left:50px;
-    padding-right: 50px;
-}
 
 .custom-text>h4{
     font-family: 'Inter', sans-serif;
@@ -125,15 +90,18 @@ body{
     color:white;
     background-color:#dd1229;
     border:none;
-    padding: 12px 40px ;
     font-size:24px;
     font-weight: 500;
 }
 
+h1{
+    font-weight: 800;
+    font-size: 54px;
+}
+
 h4{
     font-weight: 800;
-    font-size: 24px;
-    margin:0px;
+    font-size: 16px;
 }
 
 .custom-text>p{
@@ -165,6 +133,16 @@ h4{
 }
 .section-details-info{
     padding:50px
+}
+
+.detalle{
+    font-size: 10px;
+}
+@media screen and (max-width: 1100px){
+    .cards{
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 
