@@ -16,6 +16,7 @@ async function cargarProductos(productos) {
     console.error('Error al cargar los productos:', error);
   }
 }
+/* cargarProductos(productos) */
 
 router.get('/shop-collections1', async (req, res) => {
   try {
