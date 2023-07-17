@@ -1,12 +1,14 @@
-<!-- <style type="text/css">
+<style type="text/css">
   p {
     color: rgb(44, 44, 155);
     font-weight: bold;
     font-size: 1.5rem;
   }
-
+h1{
+  margin-left: 30px;
+}
   h2 {
-    background-color: black;
+    background-color: rgb(112, 104, 104);
     color: white;
   }
 
@@ -17,21 +19,41 @@
     width: 150px;
     border-radius: 10%;
     margin-left: 25%;
+   
   }
 
   img {
-    height: 20%;
-    width: 20%;
+    height: 60%;
+    width: 60%;
     align-items: center;
+    margin-left: 30px;
   }
 
   .carro {
-    background-color: rgb(201, 173, 138);
-    width: 50%;
+    background-color: rgb(206, 194, 179);
+    width: 65%;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
+    margin-left: 20%;
+    border-radius: 5%;
+  }
+  .div1{
+    width: 50%;
+    padding: 30px;
+  }
+  .div2{
+    width: 50%;
+    text-align: justify;
+    padding: 30px;
+       
+  }
+  .div1 p{
+    text-align: center;
+  }
+  .div2 h1{
+    text-align: center;
   }
 
   .foto-carro {
@@ -40,13 +62,13 @@
 </style>
 
 <div class="carro">
-
-  <h2>NUEVO - EXCLUSIVO - BEST SELLER</h2>
+  <div>
+  <h1>Titulo: <%= producto.title %></h1>
   <img src="<%= producto.images %>" class="foto-carro" alt="">
 
-  <div>
+  <div class="div1">
     <p>Precio: $ <%= producto.price %></p>
-    <p>Titulo: <%= producto.title %></p>
+    
     <form action="/carrito/agregar" method="POST">
       <input type="hidden" name="title" value="<%= producto.title %>">
       <input type="hidden" name="description" value="<%= producto.description %>">
@@ -56,9 +78,15 @@
       <button class="btn btn-danger btn-detail" type="submit">COMPRAR</button>
     </form>
   </div>
-</div> -->
+  </div>
+<div class="div2">
+  <h1>Descripcion: </h1>
+  <P>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio autem maiores ex consequuntur aliquam est sunt libero quam animi fugiat pariatur suscipit nisi, exercitationem eum porro voluptate doloremque dolores accusantium.
+Lorem ipsum dolor sit, amet consectetur adipisicing elit. In repudiandae commodi perspiciatis iusto debitis optio officiis, dignissimos sit tempora adipisci quibusdam suscipit qui excepturi! A voluptates accusantium vitae eius! Corporis.    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit doloribus accusamus ipsum esse aspernatur molestiae tenetur aliquid dolor dignissimos laudantium illum ea eius maxime, porro soluta enim necessitatibus a?</P>
+</div>
+</div>
 
-<div class="container-fluid carro-container">
+<!-- <div class="container-fluid carro-container">
   <div class="card col-4">
     <div class="etiquetas">
       <p>NUEVO</p>
@@ -81,4 +109,4 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
