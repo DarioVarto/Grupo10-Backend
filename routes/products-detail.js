@@ -18,6 +18,7 @@ async function cargarProductos(productos) {
     console.error('Error al cargar los productos:', error);
   }
 }
+/* cargarProductos(productos) */
 
 //cargarProductos(productos)
 
@@ -67,17 +68,6 @@ router.post('/details/:id', ensureAuthenticated, async (req, res) => {
   }
 });
 
-/* router.get('/prod', ensureAuthenticated, (req, res) => {
-  const userNameValue = req.user.email;
-  Producto.find({})  //Busca y me trae todos los usuarios
-    .then(productos => {
-      res.render('./products/prod', { productos: productos }, { userName: userNameValue }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
-    })
-    .catch(error => {
-      res.render('products/prod', { userName: userName }) //Renderizo la página de todos los usuarios
-    })
-
-}) */
 router.get('/prod', ensureAuthenticated, async (req, res) => {
   const userName = req.user.email;
   try {
@@ -201,6 +191,62 @@ router.get('/compraRealizada', async (req, res) => {
     res.redirect('/carrito'); // Redirigir a la página del carrito en caso de error
   }
 });
+router.get('/allproducts', ensureAuthenticated, (req, res) => {
+  Producto.find({})  //Busca y me trae todos los usuarios
+    .then(productos => {
+      res.render('products/allproducts', { productos: productos }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
+    })
+    .catch(error => {
+      res.render('products/allproducts') //Renderizo la página de todos los usuarios
+    })
+
+})
+router.get('/editProducts/:id', (req, res) => {
+  let buscarId = { _id: req.params.id };
+  Producto.findOne(buscarId)
+    .then(producto => {
+      res.render('./products/editProducts', { producto: producto }); // Asegúrate de pasar el objeto 'producto' como variable
+    })
+    .catch(error => {
+      console.log(error);
+      req.flash('error_msg', 'Error:' + error);
+      res.redirect('products/editProducts');
+    });
+});
+router.put('/editProducts/:id', async (req, res) => {
+  let buscarId = { _id: req.params.id };
+
+    Producto.updateOne(buscarId, {
+      $set: {
+        title: req.body.title,
+      stock: req.body.stock,
+      price: req.body.price,
+      }
+    })
+    .then(() => {
+      req.flash('success_msg', 'Los datos se modificaron exitosamente');
+      res.redirect('/allproducts');
+    })
+    .catch(err => {
+      req.flash('error_msg', 'ERROR: ' + err);
+      res.redirect('/products/allproducts');
+    })
+});
+router.delete('/delete/producto/:id', (req, res) => {
+  let buscarId = { _id: req.params._id };
+  Producto.deleteOne(buscarId)
+    .then(() => {
+      req.flash('success_msg', 'Producto eliminado exitosamente');
+      res.redirect('/allproducts');
+    })
+    .catch(err => {
+      req.flash('error_msg', 'ERROR: ' + err);
+      res.redirect('/allproducts');
+    })
+});
+
+
+
 
 
 export default router  

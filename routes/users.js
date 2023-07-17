@@ -7,6 +7,7 @@ import nodemailer from 'nodemailer'
 import LocalStrategy from 'passport-local';
 import jwt from 'jsonwebtoken'
 import User from '../models/usermodels.js'
+import Producto from '../models/products.js'
 
 
 
@@ -35,8 +36,15 @@ router.post('/login', (req, res, next) => {
       return res.redirect('/login');
     }
     if (usuario.esAdmin) {
-      req.flash('success_msg', '🟢🟢🟢BIENVENIDO', (usuario.nombre).toUpperCase(), 'USTED ES EL ADMINISTRADOR✅✅✅')
-      return res.redirect('/dashboard');
+      let userName = usuario.email;
+      req.login(usuario, (err) => {
+        if (err) {
+          return next(err);
+        }
+        req.flash('success_msg', '🟢🟢🟢BIENVENIDO', (usuario.nombre).toUpperCase(), 'USTED ES EL ADMINISTRADOR✅✅✅')
+        return res.render('admin/dashboard', { userName: userName });
+      });
+      
     } else {
       let userName = usuario.email;
       req.login(usuario, (err) => {
@@ -124,31 +132,19 @@ router.get('/alluser', ensureAuthenticated, (req, res) => {
     })
 
 })
-// //RUTA DASHBOARD
-// router.get('/alluser', ensureAuthenticated, (req, res) => {
-//   router.get('/dashboard', (req, res) => {
-//   const userName = res.locals.userName;
-//   User.find({})
-//     .then(usuarios => {
-//       res.render('./admin/dashboard', { usuarios: usuarios })
-//     })
-//     .catch(error => {
-//       res.render('/admin/dashboard')
-//     })
 
-// })
+
 //RUTA DASHBOARD
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
   const userName = res.locals.userName;
   User.find({})
     .then(usuarios => {
-      res.render('./admin/dashboard', { usuarios: usuarios })
+      res.render('admin/dashboard', { usuarios: usuarios, userName: userName });
     })
     .catch(error => {
-      res.render('/admin/dashboard')
-    })
-
-})
+      res.render('/admin/dashboard');
+    });
+});
 
 
 router.get('/edituser/:id', (req, res) => {
@@ -210,26 +206,7 @@ router.post('/registrar', (req, res) => {
 });
 
 
-//Login para usuarios registrados
 
-router.post('/login', 
-passport.authenticate('local', (err, usuario, info) => {
-  if (err) {
-    return next(err);
-  }
-  if (!usuario) {
-    req.flash('error_msg', 'ERROR: usuario o contraseña incorrecta');
-    return res.redirect('/login');
-  }
-  if (usuario.esAdmin) {
-    return res.redirect('/dashboard');
-  } else {
-    return res.redirect('/');
-  }
-}
-)
-
-);
 function generarToken(usuarioId) {
   // Clave secreta para firmar el token (puedes cambiarla por una más segura)
   const claveSecreta = 'secretKey';
