@@ -62,7 +62,7 @@ function getAvengers(data){
         '<img class="ratio" src="'+
                     data[i].thumbnail.path + "." + data[i].thumbnail.extension + '"'+ ">" +
                     '<h3 name="avengerName">' + data[i].title + "</h3>" + 
-                    '<h3 name="avengerName">' + "$ " + data[i].prices[0].price + "</h3>"
+                    '<h3 name="avengerName">' + "$ " + data[i].price[0].price + "</h3>"
                     '</a><br>' +
                     "</div";
                     resToHtml += '\n<ul>'

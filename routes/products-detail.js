@@ -8,6 +8,7 @@ import {ensureAuthenticated } from './users.js'
 
 import productos from './productos.js'
 
+//Funcion cargar productos
 async function cargarProductos(productos) {
   try {
     await Producto.insertMany(productos);
@@ -17,6 +18,8 @@ async function cargarProductos(productos) {
     console.error('Error al cargar los productos:', error);
   }
 }
+
+//cargarProductos(productos)
 
 router.get('/shop-collections1', async (req, res) => {
   try {
@@ -88,26 +91,26 @@ router.get('/prod', ensureAuthenticated, async (req, res) => {
 
 
 router.post('/carrito/agregar',ensureAuthenticated, (req, res) => {
-  const { title, description, prices, stock,images } = req.body;
+  const { title, description, price, stock,images } = req.body;
   
   if (!req.session.carrito) {
     req.session.carrito = [];
     req.session.total = 0; // Establece el total en 0 si el carrito no existe
   }
   
-  const precioNum = parseFloat(prices);
+  const precioNum = parseFloat(price);
   const stockNum = parseInt(stock);
   const producto = {
     title,
     description,
     images,
-    prices: precioNum,
+    price: precioNum,
     stock: stockNum - 1,
     cantidad: 1
   };
   
   req.session.carrito.push(producto);
-  req.session.total += producto.prices; // Suma solo el precio del producto agregado
+  req.session.total += producto.price; // Suma solo el precio del producto agregado
   
   res.redirect('/carrito');
 });
@@ -124,7 +127,7 @@ router.post('/carrito/sumar/:index', (req, res) => {
       }
       producto.cantidad += 1;
       producto.stock -= 1;
-      req.session.total += producto.prices;
+      req.session.total += producto.price;
     }
   }
   
@@ -140,7 +143,7 @@ router.post('/carrito/restar/:index', (req, res) => {
     if (producto.cantidad > 1) {
       producto.cantidad -= 1;
       producto.stock += 1;
-      req.session.total -= producto.prices; // Resta solo el precio del producto restado
+      req.session.total -= producto.price; // Resta solo el precio del producto restado
     } else {
       req.session.carrito.splice(index, 1);
     }

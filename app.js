@@ -36,8 +36,7 @@ import { router } from './routes/users.js'
 const userRoutes = router
 /* import userRoutes from './routes/users.js' */
 import productRoutes from './routes/products-detail.js'
-/* import universoRoutes from './routes/universo-marvel2.js'
-import productosRouter from './routes/products.routes.js' */
+
 
 
 import User from './models/usermodels.js'
@@ -103,10 +102,8 @@ app.use(express.static('public')); //Conexión a carpeta public
 
 app.use(userRoutes);
 app.use(productRoutes);
-/* app.use(universoRoutes);
-app.use(productosRouter)
- */
-app.get('/productos', (req,res) => {
+
+app.get('/productos', (req, res) => {
     res.send("Hola desde productos")
 })
 
