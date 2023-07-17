@@ -6,27 +6,25 @@
       <a class="link-item coustomize" href="/prod">TODOS LOS PRODUCTOS!</a>
     </div>
     <div class="col-md-4 d-none d-lg-block d-xl-block  mt-3 text-center input-encabezado">
-      <!-- <input class="link-item" type="text" placeholder="BUSCAR"> -->
-      
+
     </div>
     <div class="col-md-4 text-end d-flex justify-content-end align-items-center registro">
       <% if (userName) { %>
-           
-         <button class="btn dropdown-toggle userName" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= userName %></button>
-         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+        <button class="btn dropdown-toggle userName" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <%= userName %>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="/changepassword">Modificar contraseña</a>
           <form action="/logout" method="post">
             <button class="dropdown-item" type="submit">Cerrar sesión</button>
           </form>
         </div>
-      <% } else { %>
-        <a href="/login">Ingresar</a>
-      <% } %>
+        <% } else { %>
+          <a href="/login">Ingresar</a>
+          <% } %>
 
-      <a class="link-item remove-pad-right text-primary" href="/carrito">CARRITO </a>
+            <a class="link-item remove-pad-right text-primary" href="/carrito">CARRITO </a>
     </div>
   </div>
-
-
-
-  
