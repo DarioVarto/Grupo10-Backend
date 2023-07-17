@@ -198,6 +198,5 @@ router.get('/compraRealizada', async (req, res) => {
   }
 });
 
+
 export default router  
-
-
