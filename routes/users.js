@@ -64,7 +64,7 @@ function ensureAuthenticated(req, res, next) {
 
     return next();
   }
-  req.flash('success_msg', ' Por favor, ingresar para continuar navegando')
+  req.flash('success_msg', 'Por favor, ingresar para continuar navegando')
   res.redirect('/login');
 }
 
