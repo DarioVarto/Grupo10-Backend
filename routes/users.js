@@ -5,16 +5,17 @@ import crypto from 'crypto'
 import async from 'async'  //Funciones asincrónicas que deben realizare en orden. El resultado de una función lo retoma la próxima función
 import nodemailer from 'nodemailer'
 import LocalStrategy from 'passport-local';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken' //Extensión para generar token
 import User from '../models/usermodels.js'
 import Producto from '../models/products.js'
 
 
-
+//Configuro passport
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 },
+//Asigno email a userName para luego poder requerirla en las rutas
   function (email, password, done) {
     userName = email;
     User.findOne({ email: email }, function (err, usuario) {
@@ -57,6 +58,8 @@ router.post('/login', (req, res, next) => {
     }
   })(req, res, next);
 });
+
+//Defino función ensureAuthenticated para pedir a los usuarios que se logueen para poder navegar
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -134,7 +137,6 @@ router.get('/alluser', ensureAuthenticated, (req, res) => {
 })
 
 
-//RUTA DASHBOARD
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
   const userName = res.locals.userName;
   User.find({})
@@ -156,8 +158,8 @@ router.get('/edituser/:id', (req, res) => {
     })
     .catch(error => {
       console.log(error)
-      res.flash('error_msg', 'Error:' + error) //Muestro el error por el que no puede realizar la acción
-      res.redirect('users/allusers') /* Redirijo a la página de todos los usuarios con un mensaje de error */
+      res.flash('error_msg', 'Error:' + error) /
+      res.redirect('users/allusers') 
     })
 })
 
@@ -174,9 +176,9 @@ router.get('/olvido', (req, res) => {
 
 
 router.get(('/logout', (req, res) => {  //No es necesario crear un archivo logout, es una petición del cierre de sesión
-  //Mensaje para el usuario que se deslogueo
+  
   req.logOut(); //Método propio de nodejs para cerrar sesión
-  res.flash('success_msg', 'Su sesión ha finalizado correctamente')
+  res.flash('success_msg', 'Su sesión ha finalizado correctamente') //Mensaje para el usuario que se deslogueo
   res.redirect('/login')
 }))
 
@@ -206,7 +208,7 @@ router.post('/registrar', (req, res) => {
 });
 
 
-
+//Función para generar token
 function generarToken(usuarioId) {
   // Clave secreta para firmar el token (puedes cambiarla por una más segura)
   const claveSecreta = 'secretKey';
@@ -406,7 +408,7 @@ router.delete('/delete/usuario/:id', (req, res) => {
 });
 
 
-/* export default router */
-export { router, ensureAuthenticated };
+
+export { router, ensureAuthenticated }; //Exporto router y la función para solicitar logueo para navegar
 
 

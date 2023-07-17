@@ -1,3 +1,5 @@
+//Guardo en una variable el json obtenido de la api
+
 const jsonData = [{
   "id": 291,
 
@@ -1190,7 +1192,7 @@ const jsonData = [{
 
 
 
-
+//Datos cargados en primer petición con img como array
 /* [{
     "id": 82967,
     "title": "Marvel Previews (2017)",
@@ -1388,29 +1390,29 @@ const jsonData = [{
 
 
 jsonData.forEach(item => {
-  /* // Verificar si la propiedad "images" existe y contiene al menos un elemento
+  /* // Verifico si la propiedad "images" existe y contiene al menos un elemento
   if (item.images && item.images.length > 0) {
     const path = item.images[0].path;
     const extension = item.images[0].extension;
     item.images = `${path}.${extension}`;
   } else {
-    // Si "images" no existe o está vacía, asignar un valor predeterminado o null
+    // Si "images" no existe o está vacía, asigno un valor predeterminado o null
     item.images = null;
   }
  
-  // Verificar si la propiedad "prices" existe y contiene al menos un elemento
+  // Verifico si la propiedad "prices" existe y contiene al menos un elemento
   if (item.prices && item.prices.length > 0) {
     item.prices = item.prices[0].price;
   } else {
-    // Si "prices" no existe o está vacía, asignar un valor predeterminado o null
+    // Si "prices" no existe o está vacía, asigno un valor predeterminado o null
     item.prices = null;
   } */
 
-  // Agregar la propiedad "stock" con un número aleatorio positivo entre 1 y 100
+  // Agrego la propiedad "stock" con un número aleatorio positivo entre 1 y 100
   item.stock = Math.floor(Math.random() * 100) + 1;
 });
 
 const productos = jsonData;
-export default productos;
+export default productos; //Exporto producto con stock 
 
 

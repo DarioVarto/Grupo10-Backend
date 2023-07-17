@@ -6,7 +6,7 @@ import Producto from '../models/products.js'
 import {ensureAuthenticated } from './users.js'
 
 
-import productos from './productos.js'
+import productos from './productos.js'//importo la variable producto del archivo producto.js
 
 //Funcion cargar productos
 async function cargarProductos(productos) {
@@ -18,29 +18,16 @@ async function cargarProductos(productos) {
     console.error('Error al cargar los productos:', error);
   }
 }
-/* cargarProductos(productos) */
+/* cargarProductos(productos) */ //Comento la función para que no se carguen los productos cada vez que salvamos cambios
 
-//cargarProductos(productos)
-
-router.get('/shop-collections1', async (req, res) => {
-  try {
-    const productos = await obtenerProductosDesdeLaBaseDeDatos(); // Aquí obtienes tus productos de alguna manera
-
-    // Renderizar la vista y pasar la variable `productos` en el objeto de contexto
-    res.render('products/shop-collections1', { productos: productos });
-  } catch (error) {
-    console.error('Error al obtener los productos:', error);
-    res.render('pages/error404');
-  }
-});
 
 router.get('/details/:id', ensureAuthenticated, async (req, res) => {
   try {
-    const productId = req.params.id;
-    const producto = await Producto.findById(productId);
+    const productId = req.params.id; //Guardo en productId el id
+    const producto = await Producto.findById(productId); //Busco el producto por id
 
     if (producto) {
-      res.render('products/details', { producto: producto, userName: req.user.email });
+      res.render('products/details', { producto: producto, userName: req.user.email }); //Renderizo la página, enviando producto y userName 
     } else {
       res.render('pages/error404');
     }
@@ -95,18 +82,18 @@ router.post('/carrito/agregar',ensureAuthenticated, (req, res) => {
     description,
     images,
     price: precioNum,
-    stock: stockNum - 1,
-    cantidad: 1
+    stock: stockNum - 1, //Resto al stock una unidad que es la que se agrega al carrito
+    cantidad: 1 //unidad que se agrega al carrito
   };
   
-  req.session.carrito.push(producto);
+  req.session.carrito.push(producto); //pusheo el producto al carrito
   req.session.total += producto.price; // Suma solo el precio del producto agregado
   
   res.redirect('/carrito');
 });
 
 router.post('/carrito/sumar/:index', (req, res) => {
-  const index = req.params.index;
+  const index = req.params.index; //indice del elemento del array
   
   if (req.session.carrito && req.session.carrito.length > index) {
     const producto = req.session.carrito[index];
@@ -115,9 +102,9 @@ router.post('/carrito/sumar/:index', (req, res) => {
       if (!producto.cantidad) {
         producto.cantidad = 1;
       }
-      producto.cantidad += 1;
-      producto.stock -= 1;
-      req.session.total += producto.price;
+      producto.cantidad += 1; //contador para agregar producto
+      producto.stock -= 1; //contador para restar stock
+      req.session.total += producto.price; //contador para sumar al total
     }
   }
   
@@ -131,8 +118,8 @@ router.post('/carrito/restar/:index', (req, res) => {
     const producto = req.session.carrito[index];
     
     if (producto.cantidad > 1) {
-      producto.cantidad -= 1;
-      producto.stock += 1;
+      producto.cantidad -= 1; //contador para restar producto
+      producto.stock += 1; //contador para sumar al stock
       req.session.total -= producto.price; // Resta solo el precio del producto restado
     } else {
       req.session.carrito.splice(index, 1);
@@ -147,7 +134,7 @@ router.get('/carrito', ensureAuthenticated, (req, res) => {
   const carrito = req.session.carrito || [];
   const total = req.session.total || 0; // Obtiene el total de la sesión o establece 0 si no existe
   
-  res.render('products/carrito', { carrito, total, userName }); // Pasa el total a la vista
+  res.render('products/carrito', { carrito, total, userName }); // Pasar el total a la vista
 });
 router.post('/carrito/eliminar/:index', (req, res) => {
   const index = req.params.index;
@@ -155,7 +142,7 @@ router.post('/carrito/eliminar/:index', (req, res) => {
   if (req.session.carrito && req.session.carrito.length > index) {
     const producto = req.session.carrito[index];
     req.session.total -= producto.precio * (producto.cantidad || 1);
-    req.session.carrito.splice(index, 1);
+    req.session.carrito.splice(index, 1);//elimino el producto del carrito
   }
   
   res.redirect('/carrito');
@@ -192,20 +179,20 @@ router.get('/compraRealizada', async (req, res) => {
   }
 });
 router.get('/allproducts', ensureAuthenticated, (req, res) => {
-  Producto.find({})  //Busca y me trae todos los usuarios
+  Producto.find({})  //Busca y me trae todos los productos
     .then(productos => {
-      res.render('products/allproducts', { productos: productos }) //Renderizo allusers y envío todos los usuarios que obtuve en el .find()
+      res.render('products/allproducts', { productos: productos }) //Renderizo allusers y envío todos los productos que obtuve en el .find()
     })
     .catch(error => {
-      res.render('products/allproducts') //Renderizo la página de todos los usuarios
+      res.render('products/allproducts') //Renderizo la página de todos los productos
     })
 
 })
 router.get('/editProducts/:id', (req, res) => {
   let buscarId = { _id: req.params.id };
-  Producto.findOne(buscarId)
+  Producto.findOne(buscarId) //busco el producto por id
     .then(producto => {
-      res.render('./products/editProducts', { producto: producto }); // Asegúrate de pasar el objeto 'producto' como variable
+      res.render('./products/editProducts', { producto: producto }); 
     })
     .catch(error => {
       console.log(error);
@@ -217,7 +204,7 @@ router.put('/editProducts/:id', async (req, res) => {
   let buscarId = { _id: req.params.id };
 
     Producto.updateOne(buscarId, {
-      $set: {
+      $set: {                   //modifico las propiedades con los valores obtenidos en los input
         title: req.body.title,
       stock: req.body.stock,
       price: req.body.price,
@@ -244,9 +231,5 @@ router.delete('/delete/producto/:id', (req, res) => {
       res.redirect('/allproducts');
     })
 });
-
-
-
-
 
 export default router  

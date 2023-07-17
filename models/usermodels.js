@@ -1,4 +1,4 @@
-/* import {Schema,model} from "mongoose"; */
+
 import mongoose from "mongoose";
 import passportLocalMongoose from 'passport-local-mongoose' //Permite que queda seteado el email de la base de datos
 
